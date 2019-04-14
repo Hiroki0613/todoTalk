@@ -7,14 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EAA8F4DC125F6046B99DE1E2 /* Pods_todo_talk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */; };
 		F5D70189224BC51700530800 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D70188224BC51700530800 /* AppDelegate.swift */; };
 		F5D7018B224BC51700530800 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D7018A224BC51700530800 /* ViewController.swift */; };
 		F5D7018E224BC51700530800 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5D7018C224BC51700530800 /* Main.storyboard */; };
 		F5D70190224BC51B00530800 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5D7018F224BC51B00530800 /* Assets.xcassets */; };
 		F5D70193224BC51B00530800 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5D70191224BC51B00530800 /* LaunchScreen.storyboard */; };
+		F5EB15E7224F4EF3004B57CF /* 3787-jumping-mic.json in Resources */ = {isa = PBXBuildFile; fileRef = F5EB15E5224F4EF3004B57CF /* 3787-jumping-mic.json */; };
+		F5EB15E8224F4EF3004B57CF /* 433-checked-done.json in Resources */ = {isa = PBXBuildFile; fileRef = F5EB15E6224F4EF3004B57CF /* 433-checked-done.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_todo_talk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D56E3CAB2621119EA97B3B0 /* Pods-todo_talk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.release.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.release.xcconfig"; sourceTree = "<group>"; };
+		D836C9902B7BF006F32AFD4D /* Pods-todo_talk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.debug.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.debug.xcconfig"; sourceTree = "<group>"; };
 		F5D70185224BC51700530800 /* todo_talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todo_talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D70188224BC51700530800 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5D7018A224BC51700530800 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +28,8 @@
 		F5D7018F224BC51B00530800 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F5D70192224BC51B00530800 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F5D70194224BC51B00530800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F5EB15E5224F4EF3004B57CF /* 3787-jumping-mic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "3787-jumping-mic.json"; sourceTree = "<group>"; };
+		F5EB15E6224F4EF3004B57CF /* 433-checked-done.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "433-checked-done.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +37,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAA8F4DC125F6046B99DE1E2 /* Pods_todo_talk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1315EFBC19CA049A34FEEDB6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		14DAF64BADCC26B9302D9CF9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D836C9902B7BF006F32AFD4D /* Pods-todo_talk.debug.xcconfig */,
+				3D56E3CAB2621119EA97B3B0 /* Pods-todo_talk.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		F5D7017C224BC51700530800 = {
 			isa = PBXGroup;
 			children = (
 				F5D70187224BC51700530800 /* todo_talk */,
 				F5D70186224BC51700530800 /* Products */,
+				14DAF64BADCC26B9302D9CF9 /* Pods */,
+				1315EFBC19CA049A34FEEDB6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,6 +82,8 @@
 		F5D70187224BC51700530800 /* todo_talk */ = {
 			isa = PBXGroup;
 			children = (
+				F5EB15E6224F4EF3004B57CF /* 433-checked-done.json */,
+				F5EB15E5224F4EF3004B57CF /* 3787-jumping-mic.json */,
 				F5D70188224BC51700530800 /* AppDelegate.swift */,
 				F5D7018A224BC51700530800 /* ViewController.swift */,
 				F5D7018C224BC51700530800 /* Main.storyboard */,
@@ -71,9 +101,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F5D70197224BC51B00530800 /* Build configuration list for PBXNativeTarget "todo_talk" */;
 			buildPhases = (
+				C4E9602A8648D389580FDEEB /* [CP] Check Pods Manifest.lock */,
 				F5D70181224BC51700530800 /* Sources */,
 				F5D70182224BC51700530800 /* Frameworks */,
 				F5D70183224BC51700530800 /* Resources */,
+				A0D76EE5BF5A49C252097632 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -96,6 +128,7 @@
 				TargetAttributes = {
 					F5D70184224BC51700530800 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -125,10 +158,59 @@
 				F5D70193224BC51B00530800 /* LaunchScreen.storyboard in Resources */,
 				F5D70190224BC51B00530800 /* Assets.xcassets in Resources */,
 				F5D7018E224BC51700530800 /* Main.storyboard in Resources */,
+				F5EB15E7224F4EF3004B57CF /* 3787-jumping-mic.json in Resources */,
+				F5EB15E8224F4EF3004B57CF /* 433-checked-done.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A0D76EE5BF5A49C252097632 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C4E9602A8648D389580FDEEB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-todo_talk-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F5D70181224BC51700530800 /* Sources */ = {
@@ -280,9 +362,11 @@
 		};
 		F5D70198224BC51B00530800 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D836C9902B7BF006F32AFD4D /* Pods-todo_talk.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = todo_talk/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -290,16 +374,18 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.withios.todo-talk";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		F5D70199224BC51B00530800 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3D56E3CAB2621119EA97B3B0 /* Pods-todo_talk.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = todo_talk/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -307,7 +393,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.withios.todo-talk";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
