@@ -241,6 +241,35 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
 
     
+    
+    
+    
+//使いやすさを考えて、text入力ボタンを下に移しました。
+//inputTodoTextFields(プラスボタン)を押した時に、
+//上にスクロールしてキーボドが実装できる機能を搭載したい。
+        /*UIViewwを作成し、
+        ・inputTodoTextFields
+        ・addTodo
+        を入れて、
+        そこのUIView(heightConstraints)をAutoLayOutで高さ設定し、
+        IBOutletで繋ぎ、
+     
+        下記のコードを書いたら出来そうです。
+     
+     
+        //キーボードが開く時に動くfunc
+        heightConstraint.constant = キーボードの高さ
+        view.layoutIfNeeded()
+     
+        //キーボードが閉じる時に動くfunc
+        heightConstraint.constant = 元のViewの高さ
+        view.layoutIfNeeded()
+     
+     
+ 
+        */
+    
+    
 
 }
 
