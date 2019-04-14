@@ -116,8 +116,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     
-    //平成31年4月7日に追加
+    //セルをタップした際に、文章編集画面へと画面遷移
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "toEditTaskView", sender: nil)
+        
         
         if inputTodoTextFields.resignFirstResponder() {
             inputTodoTextFields.resignFirstResponder()
@@ -126,6 +129,17 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             inputTodoTextFields.becomeFirstResponder()
         }
         
+    }
+    
+    //didselect時に値を渡しながら画面遷移をする
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "toEditTaskView"{
+            let toEditTaskViewVC :toEditTaskViewViewController = segue.destination as! toEditTaskViewViewController
+            
+            toEditTaskViewVC.edittaskView = todoArray[indexPath.row]
+            
+        }
     }
 
     

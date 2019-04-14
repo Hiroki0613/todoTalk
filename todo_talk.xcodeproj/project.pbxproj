@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EAA8F4DC125F6046B99DE1E2 /* Pods_todo_talk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */; };
+		F567E1C42262E54F00B4FAB9 /* toEditTaskViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F567E1C32262E54F00B4FAB9 /* toEditTaskViewViewController.swift */; };
 		F5D70189224BC51700530800 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D70188224BC51700530800 /* AppDelegate.swift */; };
 		F5D7018B224BC51700530800 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D7018A224BC51700530800 /* ViewController.swift */; };
 		F5D7018E224BC51700530800 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5D7018C224BC51700530800 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 		14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_todo_talk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D56E3CAB2621119EA97B3B0 /* Pods-todo_talk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.release.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.release.xcconfig"; sourceTree = "<group>"; };
 		D836C9902B7BF006F32AFD4D /* Pods-todo_talk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.debug.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.debug.xcconfig"; sourceTree = "<group>"; };
+		F567E1C32262E54F00B4FAB9 /* toEditTaskViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = toEditTaskViewViewController.swift; sourceTree = "<group>"; };
 		F5D70185224BC51700530800 /* todo_talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todo_talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D70188224BC51700530800 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5D7018A224BC51700530800 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				F5EB15E5224F4EF3004B57CF /* 3787-jumping-mic.json */,
 				F5D70188224BC51700530800 /* AppDelegate.swift */,
 				F5D7018A224BC51700530800 /* ViewController.swift */,
+				F567E1C32262E54F00B4FAB9 /* toEditTaskViewViewController.swift */,
 				F5D7018C224BC51700530800 /* Main.storyboard */,
 				F5D7018F224BC51B00530800 /* Assets.xcassets */,
 				F5D70191224BC51B00530800 /* LaunchScreen.storyboard */,
@@ -217,6 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F567E1C42262E54F00B4FAB9 /* toEditTaskViewViewController.swift in Sources */,
 				F5D7018B224BC51700530800 /* ViewController.swift in Sources */,
 				F5D70189224BC51700530800 /* AppDelegate.swift in Sources */,
 			);
