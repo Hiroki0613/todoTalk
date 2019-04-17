@@ -11,7 +11,10 @@ import Lottie
 
 
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate {
-   
+    
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     
     @IBOutlet weak var inputTodoTextFields: UITextField!
     
@@ -25,9 +28,30 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var todoArray = [String]()
     var imageArray = [String]()
     
+    //didselectを行った際に、indexPathを取得して、
+    //値を渡すときに配列の番号に指定してあげる
+    var indexNumber = Int()
 
+    //Screenの高さ
+    var screenHeight:CGFloat!
+    
+    //Screenの幅
+    var screenWidth:CGFloat!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 画面サイズ取得
+        let screenSize: CGRect = UIScreen.main.bounds
+        screenWidth = screenSize.width
+        screenHeight = screenSize.height
+        
+        
+        //表示窓のサイズと位置を設定
+        scrollView.frame.size = CGSize(width: screenWidth, height: screenHeight)
+        
+        
         
         deletedAnimationView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         self.view.addSubview(deletedAnimationView)
@@ -46,7 +70,95 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         self.navigationController?.isNavigationBarHidden = false
         navigationItem.title = "アプリ名"
         navigationItem.rightBarButtonItem = editButtonItem
+        
+        scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight * 2)
+        
+        scrollView.addSubview(inputTodoTextFields)
+        
+        //UIScrollViewの大きさを画像サイズに設定
+        
+        //スクロールの跳ね返り無し
+        scrollView.bounces = false
+        scrollView.isScrollEnabled = false
+        
+        //ビューに追加
+        self.view.addSubview(scrollView)
+        
     }
+    
+    ///////////////////////ここから
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //キーボードイベントの監視開始
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_ :)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        //キーボードイベントの監視解除
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: self.view.window)
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: self.view.window)
+        
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue, let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue {
+                restoreScrollViewSize()
+                
+                let convertedKeyboardFrame = scrollView.convert(keyboardFrame, from: nil)
+                
+                //現在選択中のTextFieldの下部Y座標とキーボードの高さから、スクロール量を決定
+                let offsetY: CGFloat = self.inputTodoTextFields!.frame.maxY - convertedKeyboardFrame.minY
+                if offsetY < 0 { return }
+                updateScrollViewSize(moveSize: offsetY, duration: animationDuration)
+            }
+        }
+    }
+    
+    //moveSize分Y方向にスクロールさせる
+    func updateScrollViewSize(moveSize: CGFloat, duration: TimeInterval) {
+        UIView.beginAnimations("ResizeKeyboard", context: nil)
+        UIView.setAnimationDuration(duration)
+        
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: moveSize, right: 0)
+        self.scrollView.contentInset = contentInsets
+        self.scrollView.scrollIndicatorInsets = contentInsets
+        self.scrollView.contentOffset = CGPoint(x: 0, y: moveSize)
+        
+        UIView.commitAnimations()
+    }
+    
+    func restoreScrollViewSize() {
+        //キーボードが閉じられた時に、スクロールした分を戻す
+        self.scrollView.contentInset = UIEdgeInsets.zero
+        self.scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+    }
+    
+    // キーボードが閉じられた時に呼ばれる
+    @objc func keyboardWillBeHidden(notification: NSNotification) {
+        restoreScrollViewSize()
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        scrollView.contentOffset.y = 0
+    }
+    
+    // TextFieldが選択された時
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        //選択されているTextFieldを更新
+        inputTodoTextFields = textField
+    }
+    
+    ////////////////ここまで
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -116,8 +228,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     
-    //セルをタップした際に、文章編集画面へと画面遷移
+//セルをタップした際に、文章編集画面へと画面遷移
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
         
         performSegue(withIdentifier: "toEditTaskView", sender: nil)
         
@@ -137,10 +251,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         if segue.identifier == "toEditTaskView"{
             let toEditTaskViewVC :toEditTaskViewViewController = segue.destination as! toEditTaskViewViewController
             
-            toEditTaskViewVC.edittaskView = todoArray[indexPath.row]
+            //indexNumber = Int()とすることで
+            toEditTaskViewVC.edittaskView = todoArray[indexNumber]
             
         }
     }
+
 
     
     

@@ -37,16 +37,16 @@ class toEditTaskViewViewController: UIViewController {
         
             
             
-        //編集画面が表示されたらすぐにキーボード入力が出来るようにする。
-            touchesBegan(<#T##touches: Set<UITouch>##Set<UITouch>#>, with: <#T##UIEvent?#>)
-            
+//        //編集画面が表示されたらすぐにキーボード入力が出来るようにする。
+//            touchesBegan(<#T##touches: Set<UITouch>##Set<UITouch>#>, with: <#T##UIEvent?#>)
+        
         //タスクの修正後、textview(editTaskView)に文章を表示
             editTaskView.text = edittaskView
             
         //Userdefaultsに文字を埋める。
         //todoArrayに再び埋めようとしたら、出来なかった・・・
-            UserDefaults.standard.set(todoArray, forKey: "todo")
-            
+//            UserDefaults.standard.set(todoArray, forKey: "todo")
+        
         //自動的に、前の画面に遷移する。
         dismiss(animated: true, completion: nil)
                       
