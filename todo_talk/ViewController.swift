@@ -10,7 +10,7 @@ import UIKit
 import Lottie
 
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate {
+class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIScrollViewDelegate {
     
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -71,7 +71,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         navigationItem.title = "アプリ名"
         navigationItem.rightBarButtonItem = editButtonItem
         
-        scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight * 2)
+        scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight*2)
         
         scrollView.addSubview(inputTodoTextFields)
         
@@ -94,12 +94,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         //キーボードイベントの監視開始
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_ :)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        
+        super.viewWillDisappear(animated)
         //キーボードイベントの監視解除
         
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: self.view.window)
@@ -125,7 +125,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     //moveSize分Y方向にスクロールさせる
     func updateScrollViewSize(moveSize: CGFloat, duration: TimeInterval) {
-        UIView.beginAnimations("ResizeKeyboard", context: nil)
+        UIView.beginAnimations("ResizeForKeyboard", context: nil)
         UIView.setAnimationDuration(duration)
         
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: moveSize, right: 0)
@@ -158,6 +158,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     ////////////////ここまで
+    
+    
+    //リターンが押された時
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        //キーボードを閉じる
+        inputTodoTextFields.resignFirstResponder()
+        return true
+    }
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
