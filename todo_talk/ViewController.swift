@@ -8,9 +8,23 @@
 
 import UIKit
 import Lottie
+import Speech
 
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIScrollViewDelegate {
+class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIScrollViewDelegate,SFSpeechRecognizerDelegate {
+    
+    // MARK: 音声メモのコードを載せます
+    //localeのidentifierに言語を指定、。日本語はja-JP,英語はen-US
+    let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ja-JP"))!
+    var recognitionRequest: SFSpeechAudioBufferRecognitionRequest
+    var recognitionTask: SFSpeechRecognitionTask
+    let audioEngine = AVAudioEngine()
+    
+    //文字音声認識された
+    var voiceStr : String! = ""
+    
+    //録音の開始、停止ボタン
+    @IBOutlet weak var recordButton: UIButton!
     
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -20,7 +34,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @IBOutlet weak var todoTableView: UITableView!
     
-    
+    //録音の開始、停止ボタン
     @IBOutlet weak var micAnimation: LOTAnimationView!
     
     var deletedAnimationView = LOTAnimationView()
@@ -52,7 +66,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         scrollView.frame.size = CGSize(width: screenWidth, height: screenHeight)
         
         
-        
+//        //「追記」　削除した時にLottieアニメーションが表示される
         deletedAnimationView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         self.view.addSubview(deletedAnimationView)
         deletedAnimationView.isHidden = true
@@ -61,6 +75,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         todoTableView.delegate = self
         todoTableView.dataSource = self
         inputTodoTextFields.delegate = self
+        
         
         if UserDefaults.standard.object(forKey: "todo") != nil{
             //アプリ再開時にtodoリスト一覧が見られるようにする
@@ -84,8 +99,158 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         //ビューに追加
         self.view.addSubview(scrollView)
         
+        
+        // MARK: 音声メモのコードを載せます
+        speechRecognizer.delegate = self
+        
+        //ユーザーに音声認識の許可を求める
+        SFSpeechRecognizer.requestAuthorization { authStatus in
+            
+            OperationQueue.main.addOperation {
+                switch authStatus {
+                case .authorized:
+                    //ユーザが音声認識の許可を出した時
+                    self.recordButton.isEnabled = true
+                    
+                case .denied:
+                    //ユーザが音声認識を拒否した時
+                    self.recordButton.isEnabled = false
+                    self.recordButton.setTitle("User denied access to speech recognition", for: .disabled)
+                    
+                case .restricted:
+                    //端末が音声認識に対応していない場合
+                    self.recordButton.isEnabled = false
+                    self.recordButton.setTitle("Speech recognition restricted on this device", for: .disabled)
+                    
+                case .notDetermined:
+                    //ユーザが音声認識をまだ認証していない時
+                    self.recordButton.isEnabled = false
+                    self.recordButton.setTitle("Speech recognition not yet authorized", for: .disabled)
+                }
+            }
+        }
+        
     }
     
+    // MARK: 録音ボタンが押されたら呼ばれる
+    func recordButtonTapped() {
+        
+        if audioEngine.isRunning {
+            audioEngine.stop()
+            recognitionRequest.endAudio()
+            recordButton.isEnabled = false
+            recordButton.setTitle("Stopping", for: .disabled)
+            
+            //入力された文字列の入った文字を表示
+            showStrAlert(str: self.voiceStr)
+            
+        } else {
+            try! startRecording()
+            recordButton.setTitle("Stop recording", for: [])
+        }
+    }
+    
+    //渡された文字列が入ったアラートを表示する
+    
+    func showStrAlert(str: String) {
+        
+        // UIAlertControllerを作成する.
+        let myAlert: UIAlertController = UIAlertController(title: "音声認識結果", message: <#T##String?#>, preferredStyle: .alert)
+        
+        
+        // OKのアクションを作成する.
+        let myOkAction = UIAlertAction(title: "OK", style: .default) { action in
+            print("Action OK!!")
+        }
+        
+        // OKのアクションを作成する.
+        myAlert.addAction(myOkAction)
+        
+        // UIAlertを発動する.
+        present(myAlert, animated: true, completion:  nil)
+        
+    }
+    
+    //録音を開始する
+    func startRecording() throws {
+        
+        // Cancel the previous task if it's running.
+        if let recognitionTask = recognitionTask {
+            recognitionTask.cancel()
+            self.recognitionTask = nil
+        }
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        try audioSession.setCategory(AVAudioSession.Category.record)
+        try audioSession.setMode(AVAudioSession.Mode.measurement)
+        try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
+
+        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+
+        guard let inputNode = audioEngine.inputNode else { fatalError("Audio engine has no input node") }
+        guard let recognitionRequest = recognitionRequest else { fatalError("Unable to created a SFSpeechAudioBufferRecognitionRequest object") }
+
+        // Configure request so that results are returned before audio recording is finished
+        recognitionRequest.shouldReportPartialResults = true
+
+        // A recognition task represents a speech recognition session.
+        // We keep a reference to the task so that it can be cancelled.
+        recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { result, error in
+            var isFinal = false
+
+            if let result = result {
+
+                //音声認識の区切りの良いところで実行される。
+                self.voiceStr = result.bestTranscription.formattedString
+                print(result.bestTranscription.formattedString)
+                isFinal = result.isFinal
+            }
+
+            
+            
+            
+            if error != nil || isFinal {
+                self.audioEngine.stop()
+                inputNode.removeTap(onBus: 0)
+
+                self.recognitionRequest = nil
+                self.recognitionTask = nil
+
+                self.recordButton.isEnabled = true
+                self.recordButton.setTitle("Start Recording", for: [])
+            }
+        }
+
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+            self.recognitionRequest?.append(buffer)
+        }
+
+        audioEngine.prepare()
+
+        try audioEngine.start()
+    }
+
+
+    // MARK: SFSpeechRecognizerDelegate
+    //speechRecognizerが使用可能かどうかでボタンのisEnabledを変更する
+    func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
+        if available {
+            recordButton.isEnabled = true
+            recordButton.setTitle("Start Recording", for: [])
+            
+        } else {
+            recordButton.isEnabled = false
+            recordButton.setTitle("Recognition not available", for: .disabled)
+        }
+    }
+    
+    
+    
+    
+    
+    
+    //ここから　ここまで　のコードでtextFieldをクリックした時に上にスライドされるアニメーションが追加される
     ///////////////////////ここから
     
     override func viewWillAppear(_ animated: Bool) {
@@ -237,6 +402,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
 //セルをタップした際に、文章編集画面へと画面遷移
+//  //「追加」2019年4月20日時点では、なぜか画面遷移が出来ていない・・・
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
@@ -267,13 +433,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
 
     
-    
+//  //「追記」  こちらはストーリーボードに紐づいていないので、削除対象
     @IBAction func deleteTodo(_ sender: Any) {
-   
-        
-    
+
     }
+
     
+    
+//  //「追加」　inputTodoTextFieldsをクリックした時にキーボード画面が出てくる
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if inputTodoTextFields.resignFirstResponder() {
@@ -285,6 +452,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
     }
     
+//  //「追加」　メモなので基本的に短い単語が多いが、長い文章になったときに
+//  //     可能ならばセルの高さを、該当部分だけ広くしてほしい。
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return 70
@@ -309,6 +478,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
     }
     
+    
+    
     func showAlert(){
         let alertViewControler = UIAlertController(title: "何も入力されていません。", message: "入力してください。", preferredStyle: .alert)
         
@@ -332,6 +503,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     }
     
+//  //「追加」　lottieにて、タスク完了時にアニメーションを表示する
     func startCheckOKAnimation(){
        
         deletedAnimationView.isHidden = false
@@ -346,54 +518,33 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
     }
     
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-//
-//        textField.resignFirstResponder()
-//    }
-    
-
-    
-    
-//    //チェックボックスを押した時にチェックマークが表れる
-//    func startCheckOkAnimation(){
-//        checkLottieAnimation.setAnimation(named: "433-checked-done")
-//        checkLottieAnimation.play()
-//    }
-    
-    //再びチェックボックスを押した時にチェックマークが消える
-    //↑コード確認中
-    
+//    //「追加」　音声入力ボタンが押されたら、音声入力画面に移動する
+        //背景に「〇〇というと、次のタスクに移ります。」と薄い文字で入れる。
+        //音声入力結果はリアルに表示されており、タスクが確定した時にテーブルにタスクが映る
 
     
     
     
+    //録音ボタンが押されたら音声認識をツタートする
+    @IBAction func micRecordButton(_ sender: Any) {
+        
+        recordButtonTapped()
+        
+        print("voiceStr")
+    }
     
-//使いやすさを考えて、text入力ボタンを下に移しました。
-//inputTodoTextFields(プラスボタン)を押した時に、
-//上にスクロールしてキーボドが実装できる機能を搭載したい。
-        /*UIViewwを作成し、
-        ・inputTodoTextFields
-        ・addTodo
-        を入れて、
-        そこのUIView(heightConstraints)をAutoLayOutで高さ設定し、
-        IBOutletで繋ぎ、
-     
-        下記のコードを書いたら出来そうです。
-     
-     
-        //キーボードが開く時に動くfunc
-        heightConstraint.constant = キーボードの高さ
-        view.layoutIfNeeded()
-     
-        //キーボードが閉じる時に動くfunc
-        heightConstraint.constant = 元のViewの高さ
-        view.layoutIfNeeded()
-     
-     
+    
+    
+//    //「追加」　背景を黒い画面に変更できるオプションを追加
+    
+
+    
+    
+    /* 参考URL
+    音声認識(SFSpeechRecognizer)
+    https://swiswiswift.com/sfspeechrecognizer/
  
-        */
+    */
     
-    
-
 }
 
