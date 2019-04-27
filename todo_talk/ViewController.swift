@@ -449,7 +449,33 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         
         print("voiceStr")
+        
+        
+        
+        
+        
+        
+        //2019.04.27 追加
+        if voiceStr.isEmpty != true {
+            
+            self.todoArray.append(voiceStr)
+            UserDefaults.standard.set(self.todoArray, forKey: "todo")
+            self.todoTableView.reloadData()
+            voiceStr = ""
+        } else {
+            //音声入力が入っていない場合は、何事も無かったように最初の画面に戻って欲しい。
+        }
+        
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     //録音を開始する
     private func startRecording() throws {
