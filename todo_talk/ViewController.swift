@@ -56,6 +56,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //文字音声認識された
     var voiceStr : String! = ""
     
+    
+    //近藤追加20190430
+    //音声入力結果をUILabelで表示
+    var inputVoiceLabel = UILabel()
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -314,6 +321,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
 //セルをタップした際に、文章編集画面へと画面遷移
 //  //「追加」2019年4月20日時点では、なぜか画面遷移が出来ていない・・・
+    //2019年4月30日時点で、画面遷移はされましたが、どのボタンを押しても一番上のセルが選ばれてしまう・・・
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
@@ -453,11 +461,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             if voiceStr.isEmpty != true {
                 
                 //入力された文字列の入った文字列を表示
+                //入力された文字がリアルタイムで表示されない・・・近藤追加20190430
+                inputVoiceLabel.frame = CGRect(x: 0, y: view.frame.size.width / 3, width: view.frame.size.width, height: view.frame.size.height)
+                inputVoiceLabel.textAlignment = NSTextAlignment.center
+                inputVoiceLabel.font = UIFont.systemFont(ofSize: 30)
+                inputVoiceLabel.text = voiceStr
+                view.addSubview(inputVoiceLabel)
+                
+                
                 showStrAlert(str: self.voiceStr)
             }else {
                 
                 //空の場合
-                showStrAlert(str: self.voiceStr)
+//                showStrAlert(str: self.voiceStr)
                 showVoiceInputAlert()
             }
 
@@ -470,6 +486,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         print("voiceStr")
         
     }
+    
+    
+    
+    
+    
+    
+    
+    
 
     func showVoiceInputAlert(){
         let alertViewControler = UIAlertController(title: "何も音声が入力されていません。", message: "もう一度、発声してください", preferredStyle: .alert)
