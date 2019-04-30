@@ -140,15 +140,23 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         // OKのアクションを作成する.
         let myOkAction = UIAlertAction(title: "OK", style: .default) { action in
             print("Action OK!!")
-        }
         
+                //藤井追加20190429
+                self.todoArray.append(self.voiceStr)
+                UserDefaults.standard.set(self.todoArray, forKey: "todo")
+                self.todoTableView.reloadData()
+                self.voiceStr = ""
+            }
+
         // OKのアクションを作成する.
         myAlert.addAction(myOkAction)
         
         // UIAlertを発動する.
         present(myAlert, animated: true, completion:  nil)
+
+        }
         
-    }
+    
     
     
     
@@ -440,39 +448,41 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             //録音が停止した！
             print("録音停止")
             
-            //入力された文字列の入った文字列を表示
-            showStrAlert(str: self.voiceStr)
-            
+            //藤井追加20190429
+            //近藤追加20190429
+            if voiceStr.isEmpty != true {
+                
+                //入力された文字列の入った文字列を表示
+                showStrAlert(str: self.voiceStr)
+            }else {
+                
+                //空の場合
+                showStrAlert(str: self.voiceStr)
+                showVoiceInputAlert()
+            }
+
         } else {
             try! startRecording()
             recordButton.setTitle("Stop recording", for: [])
+            
         }
         
         print("voiceStr")
         
+    }
+
+    func showVoiceInputAlert(){
+        let alertViewControler = UIAlertController(title: "何も音声が入力されていません。", message: "もう一度、発声してください", preferredStyle: .alert)
         
         
+        let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
         
-        
-        
-        //2019.04.27 追加
-        if voiceStr.isEmpty != true {
-            
-            self.todoArray.append(voiceStr)
-            UserDefaults.standard.set(self.todoArray, forKey: "todo")
-            self.todoTableView.reloadData()
-            voiceStr = ""
-        } else {
-            //音声入力が入っていない場合は、何事も無かったように最初の画面に戻って欲しい。
-        }
+        alertViewControler.addAction(cancelAction)
+        present(alertViewControler, animated: true, completion: nil)
         
     }
-    
-    
-    
-    
-    
-    
+
+
     
     
     
