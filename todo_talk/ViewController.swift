@@ -17,10 +17,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //録音の開始、停止ボタン
     @IBOutlet weak var recordButton: UIButton!
     
-
+    //キーボードのサイズ分、画面が上にスライドさせる
+    //スクリーンサイズを取得
+    let SCREEN_SIZE = UIScreen.main.bounds.size
     
-    //キーボードを押した時に、上にスライドさせる
-    @IBOutlet weak var scrollView: UIScrollView!
+    
+    
+    
     @IBOutlet weak var inputTodoTextFields: UITextField!
     
     //tableView、背景は透明にする。
@@ -37,10 +40,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //音声入力中のアニメーション
     var animationAtInputByVoice = LOTAnimationView()
     
-    
-    
-    
-    
+
     var todoArray = [String]()
     var imageArray = [String]()
     
@@ -87,12 +87,21 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //キーボード入力時に画面を上側にスライドさせる実装コード
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow(_ :)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        // Do any additional setup after loading the view.
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide(_ :)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+
+        
+        
+        
+        
         // 画面サイズ取得
         let screenSize: CGRect = UIScreen.main.bounds
         screenWidth = screenSize.width
         screenHeight = screenSize.height
-        //表示窓のサイズと位置を設定
-        scrollView.frame.size = CGSize(width: screenWidth, height: screenHeight)
           //「追記」　削除した時にLottieアニメーションが表示される
         deletedAnimationView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         self.view.addSubview(deletedAnimationView)
@@ -108,15 +117,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         self.navigationController?.isNavigationBarHidden = false
         navigationItem.title = "アプリ名"
         navigationItem.rightBarButtonItem = editButtonItem
-        scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight*2)
-        scrollView.addSubview(inputTodoTextFields)
-        //UIScrollViewの大きさを画像サイズに設定
-        //スクロールの跳ね返り無し
-        scrollView.bounces = false
-        scrollView.isScrollEnabled = false
-        //ビューに追加
-        self.view.addSubview(scrollView)
-        // MARK: 音声メモのコードを載せます
+         // MARK: 音声メモのコードを載せます
         
         allowOnsei()
     
@@ -132,24 +133,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
         
     //待ち受け画面
-        //Micボタンを設置,中央に設置したい
-        let talkInputButton = UIButton()
-        talkInputButton.frame = CGRect(x: view.frame.width/2, y: view.frame.height/8*7-20, width: view.frame.width/8*3, height: view.frame.height/10)
-        talkInputButton.setImage(UIImage(named: "todoTalk_TalkInputButton"), for: .normal)
-        talkInputButton.contentMode = UIView.ContentMode.scaleAspectFit
-        view.addSubview(talkInputButton)
-        
-        //MicがジャンプするアニメーションをtalkInputButtonに重ねる
-        let micLottieAnimationView = LOTAnimationView()
-        let micLottieAnimation = Animation.named("todoMic2")
-        micLottieAnimationView.frame = CGRect(x: view.frame.width/2, y: view.frame.height/8*7-20, width: view.frame.width/8*3, height: view.frame.height/10)
-        view.addSubview(micLottieAnimationView)
-        
         //音声入力モードのときの734-circle-growの波が、talkInputButtonの中心点から発生しているようにする。そして、一旦非表示にする。
         let circleGrowLottieAnimationView = LOTAnimationView()
-        let circleGrowLottieAnimation = Animation.named("734-circle-grow")
         circleGrowLottieAnimationView.frame = CGRect(x: view.frame.width/2, y: view.frame.height/8*7-20, width: view.frame.width/8*3, height: view.frame.height/10)
         view.addSubview(circleGrowLottieAnimationView)
+        circleGrowLottieAnimationView.setAnimation(named: "734-circle-grow")
         circleGrowLottieAnimationView.isHidden = true
         
         
@@ -168,8 +156,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         //キーボードが上にスライドして、Mic入力ボタン,追加ボタンを覆います
         //画面背景にブラーをかけて、文字入力モードということをはっきりと示します。
         func inputTextMode(){
-            talkInputButton.isHidden = true
-            micLottieAnimationView.isHidden = true
+            recordButton.isHidden = true
+            micAnimation.isHidden = true
             visualEffectView.isHidden = false
             circleGrowLottieAnimationView.isHidden = true
             
@@ -180,7 +168,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         //「シングルタップでタスク追加、ダブルタップで入力終了」と画面背景に表示。
         //画面背景にブラーをかけて、音声入力モードということをはっきりと示します。
         func inputTalkMode(){
-            addTodo.isHidden = true
+            addTodo.view.isHidden = true
             visualEffectView.isHidden = false
             circleGrowLottieAnimationView.isHidden = false
         }
@@ -195,8 +183,39 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     
+    //キーボード入力時に画面を上側にスライドさせる実装コードの続き
+    @objc func keyboardWillShow(_ notification:NSNotification){
+        let keyboardHeight = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue.height
+        inputTodoTextFields.frame.origin.y = SCREEN_SIZE.height - keyboardHeight - inputTodoTextFields.frame.height
+    }
+    
+    @objc func keyboardWillHide(_ notification:NSNotification){
+        inputTodoTextFields.frame.origin.y = SCREEN_SIZE.height - inputTodoTextFields.frame.height
+        guard let rect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else {return}
+        UIView.animate(withDuration: duration) {
+            let transform = CGAffineTransform(translationX: 0, y: 0)
+            self.view.transform = transform
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //キーボードを閉じる処理
+        view.endEditing(true)
+        if !inputTodoTextFields.resignFirstResponder(){
+            UIView.animate(withDuration: 0.1) {
+                self.view.transform = CGAffineTransform.identity
+            }
+        }
+    }
     
     
+    
+    
+    
+    
+    
+    //音声入力の許可をユーザーに求める
     func allowOnsei(){
         
         //デリゲートの設定
@@ -231,10 +250,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     
-    
-    
-    
-    
     //渡された文字列が入ったアラートを表示する
     
     func showStrAlert(str: String) {
@@ -263,94 +278,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //ここから　ここまで　のコードでtextFieldをクリックした時に上にスライドされるアニメーションが追加される
-    ///////////////////////ここから
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        //キーボードイベントの監視開始
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        //キーボードイベントの監視解除
-        
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: self.view.window)
-        
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: self.view.window)
-        
-    }
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let userInfo = notification.userInfo {
-            if let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue, let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue {
-                restoreScrollViewSize()
-                
-                let convertedKeyboardFrame = scrollView.convert(keyboardFrame, from: nil)
-                
-                //現在選択中のTextFieldの下部Y座標とキーボードの高さから、スクロール量を決定
-                let offsetY: CGFloat = self.inputTodoTextFields!.frame.maxY - convertedKeyboardFrame.minY
-                if offsetY < 0 { return }
-                updateScrollViewSize(moveSize: offsetY, duration: animationDuration)
-            }
-        }
-    }
-    
-    //moveSize分Y方向にスクロールさせる
-    func updateScrollViewSize(moveSize: CGFloat, duration: TimeInterval) {
-        UIView.beginAnimations("ResizeForKeyboard", context: nil)
-        UIView.setAnimationDuration(duration)
-        
-        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: moveSize, right: 0)
-        self.scrollView.contentInset = contentInsets
-        self.scrollView.scrollIndicatorInsets = contentInsets
-        self.scrollView.contentOffset = CGPoint(x: 0, y: moveSize)
-        
-        UIView.commitAnimations()
-    }
-    
-    func restoreScrollViewSize() {
-        //キーボードが閉じられた時に、スクロールした分を戻す
-        self.scrollView.contentInset = UIEdgeInsets.zero
-        self.scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
-    }
-    
-    // キーボードが閉じられた時に呼ばれる
-    @objc func keyboardWillBeHidden(notification: NSNotification) {
-        restoreScrollViewSize()
-    }
-    
-    @objc func keyboardWillHide(_ notification: Notification) {
-        scrollView.contentOffset.y = 0
-    }
-    
-    // TextFieldが選択された時
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        //選択されているTextFieldを更新
-        inputTodoTextFields = textField
-    }
-    
-    ////////////////ここまで
-    
-    
-    
-    
-    
-    
+  
     
     //リターンが押された時
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -372,7 +300,20 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = todoTableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
-        let label = cell.viewWithTag(1) as! UILabel
+     
+        //チェックマックが押される前は、空白の白を入れる
+        let checkedBeforeImage = cell.viewWithTag(1) as! UIImageView
+        checkedBeforeImage.image = UIImage(named: "checkedBefore")
+        
+        //チェックマークを押すと、Lottieがアニメーションする
+        let checkedDone = cell.viewWithTag(2) as! LOTAnimationView
+        checkedDone.isHidden = false
+        checkedDone.setAnimation(named: "433-checked-done")
+        checkedDone.layer.zPosition = 1
+        checkedDone.loopAnimation = false
+
+        
+        let label = cell.viewWithTag(3) as! UILabel
         if UserDefaults.standard.object(forKey: "todo") != nil{
             todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
         }
@@ -439,23 +380,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
     }
 
-
-    
-//  //「追記」  こちらはストーリーボードに紐づいていないので、削除対象
-    @IBAction func deleteTodo(_ sender: Any) {
-
-    }
-
-    
-    
-//  //「追加」　inputTodoTextFieldsをクリックした時にキーボード画面が出てくる
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if inputTodoTextFields.resignFirstResponder() {
-            inputTodoTextFields.resignFirstResponder()
-        }else{
-            inputTodoTextFields.becomeFirstResponder()
-        }
-    }
     
 //  //「追加」　メモなので基本的に短い単語が多いが、長い文章になったときに
 //  //     可能ならばセルの高さを、該当部分だけ広くしてほしい。
