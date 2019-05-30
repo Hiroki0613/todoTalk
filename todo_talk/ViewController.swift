@@ -139,6 +139,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         view.addSubview(circleGrowLottieAnimationView)
         circleGrowLottieAnimationView.setAnimation(named: "734-circle-grow")
         circleGrowLottieAnimationView.isHidden = true
+        startMicAnimation()
         
         
         
