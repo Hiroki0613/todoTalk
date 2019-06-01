@@ -13,7 +13,6 @@ import Speech
 
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIScrollViewDelegate,SFSpeechRecognizerDelegate {
     
-    
     //録音の開始、停止ボタン
     @IBOutlet weak var recordButton: UIButton!
     
@@ -23,12 +22,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     
-    
+    //TODOを入力するテキストフィールド
     @IBOutlet weak var inputTodoTextFields: UITextField!
     
     //tableView、背景は透明にする。
     @IBOutlet weak var todoTableView: UITableView!
     
+    //＋ボタンを表示しているView(音声入力時にViewを隠すためだけに使用)
+    @IBOutlet weak var addTodoView: UIButton!
     
     
     
@@ -39,6 +40,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var deletedAnimationView = LOTAnimationView()
     //音声入力中のアニメーション
     var animationAtInputByVoice = LOTAnimationView()
+    //音声入力画面、JsonのレーダーをMicボタン中心から発生させます
+    let circleGrowLottieAnimationView = LOTAnimationView()
+    
+    
+    //音声入力、文字入力時のブラーエフェクト
+    //Blur & Vibrancyを使用。
+    @IBOutlet weak var todoBlurVibrancyEffect: UIVisualEffectView!
     
 
     var todoArray = [String]()
@@ -54,13 +62,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
 
     
-    
-    
-    
 //    //音声関連
-//    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ja-JP"))!
-//    private var recognitionTask: SFSpeechRecognitionTask?
-
     // MARK: Properties
     //localeのidentifierに言語を指定、。日本語はja-JP,英語はen-US
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ja-JP"))!
@@ -72,40 +74,35 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var voiceStr : String! = ""
     
     
-    //近藤追加20190430  音声入力結果をUILabelで表示
+//** 削除予定
+    //音声入力結果をUILabelで表示
     var inputVoiceLabel = UILabel()
-    
-    
-    
-    
-    
-    
-    
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //キーボード入力時に画面を上側にスライドさせる実装コード
+//待ち受け画面
+        waitingView()
+        
+//キーボード入力時に画面を上側にスライドさせる実装コード
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow(_ :)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        // Do any additional setup after loading the view.
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide(_ :)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
 
-        
-        
-        
-        
-        // 画面サイズ取得
+// 画面サイズ取得
         let screenSize: CGRect = UIScreen.main.bounds
         screenWidth = screenSize.width
         screenHeight = screenSize.height
-          //「追記」　削除した時にLottieアニメーションが表示される
+        
+//**削除予定　削除した時にLottieアニメーションが表示される
         deletedAnimationView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         self.view.addSubview(deletedAnimationView)
         deletedAnimationView.isHidden = true
+        
+        
         //todoTableViewのデリゲートメソッド宣言
         todoTableView.delegate = self
         todoTableView.dataSource = self
@@ -115,43 +112,25 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
         }
         self.navigationController?.isNavigationBarHidden = false
-        navigationItem.title = "アプリ名"
+        navigationItem.title = "TODO by 音声"
         navigationItem.rightBarButtonItem = editButtonItem
          // MARK: 音声メモのコードを載せます
         
         allowOnsei()
     
+        
+        
+    }
     
-        
-        
-        
-        
-        
-/////////////////////////////////////////////
-    //2019.05.25近藤追加
-    //ここからが実装の画面になります。
     
-        
-    //待ち受け画面
-        //音声入力モードのときの734-circle-growの波が、talkInputButtonの中心点から発生しているようにする。そして、一旦非表示にする。
-        let circleGrowLottieAnimationView = LOTAnimationView()
-        circleGrowLottieAnimationView.frame = CGRect(x: view.frame.width/2, y: view.frame.height/8*7-20, width: view.frame.width/8*3, height: view.frame.height/10)
-        view.addSubview(circleGrowLottieAnimationView)
-        circleGrowLottieAnimationView.setAnimation(named: "734-circle-grow")
-        circleGrowLottieAnimationView.isHidden = true
-        startMicAnimation()
-        
-        
-        
-        // ブラーエフェクトを追加し、ブラーを非表示にする
-        let blurEffect = UIBlurEffect(style: .dark)
-        let visualEffectView = UIVisualEffectView(effect: blurEffect)
-        visualEffectView.frame = self.view.frame
-        self.view.addSubview(visualEffectView)
-        visualEffectView.isHidden = true
+    
     
 
-        
+    
+    
+    
+
+    
         
     //文字入力画面
         //キーボードが上にスライドして、Mic入力ボタン,追加ボタンを覆います
@@ -159,26 +138,34 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         func inputTextMode(){
             recordButton.isHidden = true
             micAnimation.isHidden = true
-            visualEffectView.isHidden = false
+            todoBlurVibrancyEffect.isHidden = false
             circleGrowLottieAnimationView.isHidden = true
-            
         }
+        
+    
         
     //音声入力画面、JsonのレーダーをMicボタン中心から発生させます。
         //追加ボタンを隠します
         //「シングルタップでタスク追加、ダブルタップで入力終了」と画面背景に表示。
         //画面背景にブラーをかけて、音声入力モードということをはっきりと示します。
+//Vibrancyの実装が出来ていない・・・
+//コードで実装した場合、ストーリーボードのような階層を作る方法がわからない・・・
         func inputTalkMode(){
-            addTodo.view.isHidden = true
-            visualEffectView.isHidden = false
+            addTodoView.isHidden = true
+            todoBlurVibrancyEffect.isHidden = false
+            circleGrowLottieAnimationView.layer.zPosition = 1
             circleGrowLottieAnimationView.isHidden = false
+            inputTodoTextFields.isHidden = true
+            
+            let voiceTalkSupport = UILabel()
+            voiceTalkSupport.layer.zPosition = 1
+            voiceTalkSupport.text = "シングルタップでタスク追加 \n\nダブルタップで音声入力終了"
+            voiceTalkSupport.frame = todoBlurVibrancyEffect.contentView.bounds
+            todoBlurVibrancyEffect.contentView.addSubview(voiceTalkSupport)
         }
-        
-    //ここまでが実装の画面です。
-/////////////////////////////////////////
     
     
-    }
+    
     
     
     
@@ -201,11 +188,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        UIView.animate(withDuration: 0.1) {
+            self.inputTextMode()
+        }
         //キーボードを閉じる処理
         view.endEditing(true)
         if !inputTodoTextFields.resignFirstResponder(){
             UIView.animate(withDuration: 0.1) {
                 self.view.transform = CGAffineTransform.identity
+                self.waitingView()
             }
         }
     }
@@ -302,24 +294,31 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = todoTableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
      
-        //チェックマックが押される前は、空白の白を入れる
-        let checkedBeforeImage = cell.viewWithTag(1) as! UIImageView
-        checkedBeforeImage.image = UIImage(named: "checkedBefore")
+        //チェックマックが押される前は、空白のマルを入れる
+        let checkedBeforeImage = cell.viewWithTag(1) as! UIButton
         
-        //チェックマークを押すと、Lottieがアニメーションする
-        let checkedDone = cell.viewWithTag(2) as! LOTAnimationView
-        checkedDone.isHidden = false
-        checkedDone.setAnimation(named: "433-checked-done")
-        checkedDone.layer.zPosition = 1
-        checkedDone.loopAnimation = false
-
+        //セレクターを使って、UIButtonをプッシュした時に、Lottieアニメーションを出すように設定したが、実現できず・・・。
+        checkedBeforeImage.addTarget(self, action: "toCheckedDoneLottieAction", for: .touchUpInside)
         
+     
         let label = cell.viewWithTag(3) as! UILabel
         if UserDefaults.standard.object(forKey: "todo") != nil{
             todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
         }
         label.text = todoArray[indexPath.row]
         return cell
+    }
+    
+    @objc func toCheckedDoneLottieAction(_ sender:UIButton){
+        //チェックマークを押すと、Lottieがアニメーションする
+//        let checkedDone = cell.viewWithTag(2) as! LOTAnimationView
+//        checkedDone.isHidden = false
+//        checkedDone.setAnimation(named: "433-checked-done")
+//        checkedDone.layer.zPosition = 1
+//        checkedDone.loopAnimation = false
+
+        //参考URL
+        //https://qiita.com/nmisawa/items/6ffbe6b3c7f2c474c74f
     }
     
     
@@ -349,16 +348,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     
-    
+//画面遷移関係はすべて削除予定
 //セルをタップした際に、文章編集画面へと画面遷移
-//  //「追加」2019年4月20日時点では、なぜか画面遷移が出来ていない・・・
-    //2019年4月30日時点で、画面遷移はされましたが、どのボタンを押しても一番上のセルが選ばれてしまう・・・
+//画面遷移はされましたが、どのボタンを押しても一番上のセルが選ばれてしまう・・・
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
-        
         performSegue(withIdentifier: "toEditTaskView", sender: nil)
-        
         
         if inputTodoTextFields.resignFirstResponder() {
             inputTodoTextFields.resignFirstResponder()
@@ -369,6 +364,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
     }
     
+    
     //didselect時に値を渡しながら画面遷移をする
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -377,7 +373,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             
             //indexNumber = Int()とすることで
             toEditTaskViewVC.edittaskView = todoArray[indexNumber]
-            
         }
     }
 
@@ -411,10 +406,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     
-    
+//アニメーション
     //lottieにて、micAnimationを動かす
     func startMicAnimation(){
-        micAnimation.setAnimation(named: "3787-jumping-mic")
+        micAnimation.setAnimation(named: "todoMic")
         micAnimation.layer.zPosition = 1
         micAnimation.loopAnimation = true
         micAnimation.play()
@@ -422,20 +417,34 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     
-//  //「追加」　lottieにて、タスク完了時にアニメーションを表示する
+    //lottieにて、タスク完了時にアニメーションを表示する
     func startCheckOKAnimation(){
-       
         deletedAnimationView.isHidden = false
         deletedAnimationView.setAnimation(named: "433-checked-done")
         deletedAnimationView.layer.zPosition = 1
         deletedAnimationView.loopAnimation = false
         deletedAnimationView.play { (finished) in
-        
         self.deletedAnimationView.isHidden = true
-            
         }
-        
     }
+    
+    //lottieにて、talkInputButtonの中心点から発生しているようにする。
+//問題あり！。音声入力NG時or編集時に右上のDoneを押すとボタンが消えてしまう。
+    func waitingView(){
+        circleGrowLottieAnimationView.frame = CGRect(x: view.frame.width/2, y: view.frame.height/8*7-20, width: view.frame.width/8*3, height: view.frame.height/10)
+        view.addSubview(circleGrowLottieAnimationView)
+        circleGrowLottieAnimationView.setAnimation(named: "734-circle-grow")
+        circleGrowLottieAnimationView.isHidden = true
+        startMicAnimation()
+        addTodoView.isHidden = false
+        inputTodoTextFields.isHidden = false
+        
+        // ブラーエフェクトを追加し、ブラーを非表示にする
+        todoBlurVibrancyEffect.isHidden = true
+    }
+    
+    
+    
     
 //    //「追加」　音声入力ボタンが押されたら、音声入力画面に移動する
         //背景に「〇〇というと、次のタスクに移ります。」と薄い文字で入れる。
@@ -444,8 +453,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     
+    
+    
     //録音ボタンが押されたら音声認識をツタートする
     @IBAction func micRecordButton(_ sender: Any) {
+        UIView.animate(withDuration: 0.1) {
+            self.inputTalkMode()
+        }
         if audioEngine.isRunning {
             audioEngine.stop()
             recognitionRequest?.endAudio()
@@ -454,16 +468,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             //録音が停止した！
             print("録音停止")
             
-            //藤井追加20190429
-            //近藤追加20190429
+            
             if voiceStr.isEmpty != true {
                 //入力された文字列の入った文字列を表示
-                //近藤追加20190430  入力された文字がリアルタイムで表示されない・・・
+                //入力された文字がリアルタイムで表示されない・・・
+                //希望はテーブルビューに直接文字を書き込みたい
                 inputVoiceLabel.frame = CGRect(x: 0, y: view.frame.size.width / 3, width: view.frame.size.width, height: view.frame.size.height)
                 inputVoiceLabel.textAlignment = NSTextAlignment.center
                 inputVoiceLabel.font = UIFont.systemFont(ofSize: 30)
                 inputVoiceLabel.text = voiceStr
                 view.addSubview(inputVoiceLabel)
+                UIView.animate(withDuration: 0.1) {
+                    self.waitingView()
+                }
             
                 showStrAlert(str: self.voiceStr)
             }else {
@@ -494,7 +511,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     func showVoiceInputAlert(){
         let alertViewControler = UIAlertController(title: "何も音声が入力されていません。", message: "もう一度、発声してください", preferredStyle: .alert)
         
-        
         let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
         
         alertViewControler.addAction(cancelAction)
@@ -503,10 +519,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
 
 
-    
-    
-    
-    
     //録音を開始する
     private func startRecording() throws {
         

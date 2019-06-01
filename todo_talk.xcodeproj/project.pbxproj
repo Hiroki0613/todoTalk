@@ -8,8 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EAA8F4DC125F6046B99DE1E2 /* Pods_todo_talk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */; };
-		F552F1CB2298382E006EF2EA /* todoMic1.json in Resources */ = {isa = PBXBuildFile; fileRef = F552F1CA2298382D006EF2EA /* todoMic1.json */; };
-		F552F1CD22983835006EF2EA /* todoMic2.json in Resources */ = {isa = PBXBuildFile; fileRef = F552F1CC22983834006EF2EA /* todoMic2.json */; };
+		F54E4AE822A133BE00404021 /* todoMic.json in Resources */ = {isa = PBXBuildFile; fileRef = F54E4AE722A133BE00404021 /* todoMic.json */; };
 		F552F1CF22984C52006EF2EA /* 734-circle-grow.json in Resources */ = {isa = PBXBuildFile; fileRef = F552F1CE22984C52006EF2EA /* 734-circle-grow.json */; };
 		F552F1F5229917A4006EF2EA /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F552F1F4229917A4006EF2EA /* EditViewController.swift */; };
 		F567E1C42262E54F00B4FAB9 /* toEditTaskViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F567E1C32262E54F00B4FAB9 /* toEditTaskViewViewController.swift */; };
@@ -26,8 +25,7 @@
 		14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_todo_talk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D56E3CAB2621119EA97B3B0 /* Pods-todo_talk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.release.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.release.xcconfig"; sourceTree = "<group>"; };
 		D836C9902B7BF006F32AFD4D /* Pods-todo_talk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.debug.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.debug.xcconfig"; sourceTree = "<group>"; };
-		F552F1CA2298382D006EF2EA /* todoMic1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = todoMic1.json; sourceTree = "<group>"; };
-		F552F1CC22983834006EF2EA /* todoMic2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = todoMic2.json; sourceTree = "<group>"; };
+		F54E4AE722A133BE00404021 /* todoMic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = todoMic.json; sourceTree = "<group>"; };
 		F552F1CE22984C52006EF2EA /* 734-circle-grow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "734-circle-grow.json"; sourceTree = "<group>"; };
 		F552F1F4229917A4006EF2EA /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		F567E1C32262E54F00B4FAB9 /* toEditTaskViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = toEditTaskViewViewController.swift; sourceTree = "<group>"; };
@@ -93,8 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				F5EB15E6224F4EF3004B57CF /* 433-checked-done.json */,
-				F552F1CA2298382D006EF2EA /* todoMic1.json */,
-				F552F1CC22983834006EF2EA /* todoMic2.json */,
+				F54E4AE722A133BE00404021 /* todoMic.json */,
 				F552F1CE22984C52006EF2EA /* 734-circle-grow.json */,
 				F5EB15E5224F4EF3004B57CF /* 3787-jumping-mic.json */,
 				F5D70188224BC51700530800 /* AppDelegate.swift */,
@@ -171,8 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5D70193224BC51B00530800 /* LaunchScreen.storyboard in Resources */,
-				F552F1CD22983835006EF2EA /* todoMic2.json in Resources */,
-				F552F1CB2298382E006EF2EA /* todoMic1.json in Resources */,
+				F54E4AE822A133BE00404021 /* todoMic.json in Resources */,
 				F5D70190224BC51B00530800 /* Assets.xcassets in Resources */,
 				F5D7018E224BC51700530800 /* Main.storyboard in Resources */,
 				F552F1CF22984C52006EF2EA /* 734-circle-grow.json in Resources */,
