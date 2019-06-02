@@ -22,13 +22,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <view alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l3i-Wl-pAN">
+                            <view alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l3i-Wl-pAN" userLabel="BlackCurtainView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eUi-jm-uIr">
+                            <visualEffectView opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eUi-jm-uIr">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="9sO-ap-EkW">
@@ -50,9 +50,9 @@
                                         </visualEffectView>
                                     </subviews>
                                 </view>
-                                <vibrancyEffect>
-                                    <blurEffect style="dark"/>
-                                </vibrancyEffect>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <blurEffect style="dark"/>
                             </visualEffectView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="crJ-B0-uzM">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -145,7 +145,7 @@
                                     <color key="titleColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="goToEditView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lSW-0d-TXe"/>
+                                    <action selector="goToEditViewButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="81K-Si-8Et"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -158,6 +158,7 @@
                     <connections>
                         <outlet property="addTodoView" destination="ecP-RG-Bwz" id="n1W-ST-2sX"/>
                         <outlet property="backGroundImageView" destination="sfH-57-rd0" id="Lg9-5x-9Qz"/>
+                        <outlet property="goToEditView" destination="FRV-6Q-7UY" id="MRC-E9-02m"/>
                         <outlet property="inputTodoTextFields" destination="Uaa-3R-fia" id="2fy-hR-8Pp"/>
                         <outlet property="micAnimation" destination="KEa-bV-AoT" id="g6U-Cv-Pxk"/>
                         <outlet property="recordButton" destination="xxe-TE-vIG" id="xVG-4p-GvP"/>
