@@ -44,7 +44,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //音声入力中のアニメーション
     var animationAtInputByVoice = LOTAnimationView()
     //音声入力画面、JsonのレーダーをMicボタン中心から発生させます
-    let circleGrowLottieAnimationView = LOTAnimationView()
+    var circleGrowLottieAnimationView = LOTAnimationView()
+    
+    //波紋アニメーションテスト
+    var growAnimation = LOTAnimationView()
+    
     
     
     //音声入力、文字入力時のブラーエフェクト
@@ -86,11 +90,17 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//待ち受け画面
-        waitingView()
+//        growAnimationLottie()
         
+
 //波紋を設定
         circleGrowLottieAnimation()
+        
+//マイクのアニメーション
+        startMicAnimation()
+        
+        
+
         
 //キーボード入力時に画面を上側にスライドさせる実装コード
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow(_ :)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -131,6 +141,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        //待ち受け画面
+        waitingView()
+        
         if UserDefaults.standard.object(forKey: "photo") != nil {
             let selectedImage = UserDefaults.standard.object(forKey: "photo")
             //Data型→Image型に変換
@@ -145,7 +158,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         //キーボードが上にスライドして、Mic入力ボタン,追加ボタンを覆います
         //画面背景にブラーをかけて、文字入力モードということをはっきりと示します。
         func inputTextMode(){
-            circleGrowLottieAnimation()
+//            circleGrowLottieAnimation()
             recordButton.isHidden = true
             micAnimation.isHidden = true
             todoBlurVibrancyEffect.isHidden = false
@@ -162,7 +175,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 //Vibrancyの実装が出来ていない・・・
 //コードで実装した場合、ストーリーボードのような階層を作る方法がわからない・・・
         func inputTalkMode(){
-            circleGrowLottieAnimation()
+//            circleGrowLottieAnimation()
             addTodoView.isHidden = true
             todoBlurVibrancyEffect.isHidden = false
             circleGrowLottieAnimationView.isHidden = false
@@ -176,7 +189,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             let voiceTalkSupport = UILabel()
             voiceTalkSupport.layer.zPosition = 1
             voiceTalkSupport.text = "シングルタップでタスク追加\n\nダブルタップで音声入力終了"
-            voiceTalkSupport.font = UIFont.systemFont(ofSize: 28)
+            voiceTalkSupport.font = UIFont.init(name: "HiraMaruProN-W4", size: 22)
+         //   systemFont(ofSize: 28)
             voiceTalkSupport.textColor = .white
             voiceTalkSupport.textAlignment = .center
             voiceTalkSupport.numberOfLines = 0
@@ -209,10 +223,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn
             , animations: {
-                self.inputTextMode()
+ //2019.06.06 近藤疑問　なんでここにinputTextMode()が入っているのか
+                self.inputTalkMode()
         }, completion: nil)
         //キーボードを閉じる処理
         view.endEditing(true)
@@ -454,8 +469,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         circleGrowLottieAnimationView.setAnimation(named: "734-circle-grow")
         circleGrowLottieAnimationView.loopAnimation = true
         circleGrowLottieAnimationView.layer.zPosition = 0
+        circleGrowLottieAnimationView.contentMode = .scaleAspectFit
+        //play()が抜けていた・・・
+        circleGrowLottieAnimationView.play()
     }
     
+    
+    func growAnimationLottie(){
+        growAnimation.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        self.view.addSubview(growAnimation)
+        growAnimation.setAnimation(named: "734-circle-grow")
+        growAnimation.loopAnimation = true
+        growAnimation.play()
+    }
     
     
     //lottieにて、タスク完了時にアニメーションを表示する
@@ -472,9 +498,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //lottieにて、talkInputButtonの中心点から発生しているようにする。
 //問題あり！。音声入力NG時or編集時に右上のDoneを押すとボタンが消えてしまう。
     func waitingView(){
-        circleGrowLottieAnimation()
         circleGrowLottieAnimationView.isHidden = true
-        startMicAnimation()
+//        startMicAnimation()
         addTodoView.isHidden = false
         inputTodoTextFields.isHidden = false
         goToEditView.isHidden = false
