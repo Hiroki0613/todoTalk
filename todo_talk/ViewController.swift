@@ -158,9 +158,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         //キーボードが上にスライドして、Mic入力ボタン,追加ボタンを覆います
         //画面背景にブラーをかけて、文字入力モードということをはっきりと示します。
         func inputTextMode(){
-//            circleGrowLottieAnimation()
-            recordButton.isHidden = true
-            micAnimation.isHidden = true
+            circleGrowLottieAnimation()
+//            recordButton.isHidden = true
+//            micAnimation.isHidden = true
             todoBlurVibrancyEffect.isHidden = false
             circleGrowLottieAnimationView.isHidden = true
             goToEditView.isHidden = true
