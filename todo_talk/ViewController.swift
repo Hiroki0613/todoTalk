@@ -93,9 +93,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        growAnimationLottie()
         
-
 //波紋を設定
         circleGrowLottieAnimation()
         
@@ -163,13 +161,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         } else {
             //画像が選択されていない場合は、何もしない
         }
-        
-        
-        
-        
     }
     
 
+    
     //文字入力画面
         //キーボードが上にスライドして、Mic入力ボタン,追加ボタンを覆います
         //画面背景にブラーをかけて、文字入力モードということをはっきりと示します。
@@ -341,6 +336,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 self.todoTableView.reloadData()
                 self.voiceStr = ""
                 self.recordButton.isEnabled = true
+            
+//            self.micRecordButtonPush()
+            
             }
 
         // OKのアクションを作成する.
@@ -483,13 +481,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         self.todoTableView.reloadData()
         inputTodoTextFields.text = ""
         }else{
-            showAlert()
+            showTextInputAlert()
         }
     }
     
     
     
-    func showAlert(){
+    func showTextInputAlert(){
         let alertViewControler = UIAlertController(title: "何も入力されていません。", message: "入力してください。", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alertViewControler.addAction(cancelAction)
@@ -518,15 +516,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         circleGrowLottieAnimationView.play()
     }
     
-    
-    func growAnimationLottie(){
-        growAnimation.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
-        self.view.addSubview(growAnimation)
-        growAnimation.setAnimation(named: "734-circle-grow")
-        growAnimation.loopAnimation = true
-        growAnimation.play()
-    }
-    
+ 
     
     //lottieにて、タスク完了時にアニメーションを表示する
     func startCheckOKAnimation(){
@@ -564,7 +554,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     //録音ボタンが押されたら音声認識をスタートする
     @IBAction func micRecordButton(_ sender: Any) {
-        
+       micRecordButtonPush()
+    }
+    
+    
+    //20190615近藤追加
+    //マイクボタンを押したときのアクションを定義、こちらを音声入力無しに入れる
+    func micRecordButtonPush(){
         micButtonTouchesOrNot = true
         
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
@@ -591,7 +587,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                     self.waitingView()
                 }, completion: nil)
-            
+                
                 showStrAlert(str: self.voiceStr)
                 
                 //藤井さん追加20190610
@@ -602,14 +598,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 
             }else {
                 //空の場合
-//                showStrAlert(str: self.voiceStr)
+                //                showStrAlert(str: self.voiceStr)
                 showVoiceInputAlert()
-
-//                Call can throw,but it is not marked with〜というエラーが出たのでtry!を実装
-//                https://teratail.com/questions/124347
-//                try! startRecording()
+                
+                //                Call can throw,but it is not marked with〜というエラーが出たのでtry!を実装
+                //                https://teratail.com/questions/124347
+                //                try! startRecording()
             }
-
+            
         } else {
             try! startRecording()
             recordButton.setTitle("Stop recording", for: [])
@@ -617,15 +613,21 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         
         print("voiceStr")
-        
     }
+    
+    
+    
     
 
     func showVoiceInputAlert(){
         print(recordButton.isEnabled)
         let alertViewControler = UIAlertController(title: "何も音声が入力されていません。", message: "もう一度、発声してください", preferredStyle: .alert)
         
-        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (alert) in
+            try! self.startRecording()
+        }
         
         alertViewControler.addAction(cancelAction)
         present(alertViewControler, animated: true, completion: nil)
@@ -685,10 +687,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     
-    
-    
-    
-    
     //シンプルモードに切り替わったときに使われる文字色、背景色
     func mainSimpleModeChangeSwitch(){
         
@@ -728,217 +726,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     
-    
-    
-    //藤井さん記載のコード追加20190609
-    //録音を開始する
-//    private func startRecording() throws {
-//
-//        // Cancel the previous task if it's running.
-//        if let recognitionTask = recognitionTask {
-//            recognitionTask.cancel()
-//            self.recognitionTask = nil
-//        }
-//
-//        let audioSession = AVAudioSession.sharedInstance()
-//        try audioSession.setCategory(AVAudioSession.Category.record)
-//        try audioSession.setMode(AVAudioSession.Mode.measurement)
-//        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-//
-//        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-//
-//        //        guard let inputNode = audioEngine.inputNode else { fatalError("Audio engine has no input node") }
-//
-//        let inputNode = audioEngine.inputNode
-//
-//        guard let recognitionRequest = recognitionRequest else { fatalError("Unable to created a SFSpeechAudioBufferRecognitionRequest object") }
-//
-//        // Configure request so that results are returned before audio recording is finished
-//        recognitionRequest.shouldReportPartialResults = true
-//
-//        // A recognition task represents a speech recognition session.
-//        // We keep a reference to the task so that it can be cancelled.
-//        recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { result, error in
-//            var isFinal = false
-//
-//
-//
-//            let recordingFormat = inputNode.outputFormat(forBus: 0)
-//            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-//                self.recognitionRequest?.append(buffer)
-//            }
-//
-//            audioEngine.prepare()
-//
-//            try audioEngine.start()
-//
-//
-//            if let result = result {
-//
-//                //音声認識の区切りの良いところで実行される。
-//                self.voiceStr = result.bestTranscription.formattedString
-//                print(result.bestTranscription.formattedString)
-//                isFinal = result.isFinal
-//            }
-//
-//            if error != nil || isFinal {
-//                self.audioEngine.stop()
-//                inputNode.removeTap(onBus: 0)
-//
-//                self.recognitionRequest = nil
-//                self.recognitionTask = nil
-//
-//                self.recordButton.isEnabled = true
-//                self.recordButton.setTitle("Start Recording", for: [])
-//            }
-//        }
-//
-//
-//    }
-//
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-//    //録音を開始する
-//    private func startRecording() throws {
-//
-//        // Cancel the previous task if it's running.
-//        if let recognitionTask = recognitionTask {
-//            recognitionTask.cancel()
-//            self.recognitionTask = nil
-//        }
-//
-//        let audioSession = AVAudioSession.sharedInstance()
-//        try audioSession.setCategory(AVAudioSession.Category.record)
-//        try audioSession.setMode(AVAudioSession.Mode.measurement)
-//        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-//
-//        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-//
-////        guard let inputNode = audioEngine.inputNode else { fatalError("Audio engine has no input node") }
-//
-//        let inputNode = audioEngine.inputNode
-//
-//        guard let recognitionRequest = recognitionRequest else { fatalError("Unable to created a SFSpeechAudioBufferRecognitionRequest object") }
-//
-//        // Configure request so that results are returned before audio recording is finished
-//        recognitionRequest.shouldReportPartialResults = true
-//
-//        // A recognition task represents a speech recognition session.
-//        // We keep a reference to the task so that it can be cancelled.
-//        recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { result, error in
-//            var isFinal = false
-//
-////            if let result = result {
-////
-////                //音声認識の区切りの良いところで実行される。
-////                self.voiceStr = result.bestTranscription.formattedString
-////                print(result.bestTranscription.formattedString)
-////                isFinal = result.isFinal
-////            }
-////
-////            if error != nil || isFinal {
-////                self.audioEngine.stop()
-////                inputNode.removeTap(onBus: 0)
-////
-////                self.recognitionRequest = nil
-////                self.recognitionTask = nil
-////
-////                self.recordButton.isEnabled = true
-////                self.recordButton.setTitle("Start Recording", for: [])
-////            }
-////        }
-//
-//        let recordingFormat = inputNode.outputFormat(forBus: 0)
-//        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-//            self.recognitionRequest?.append(buffer)
-//        }
-//
-//        audioEngine.prepare()
-//
-//        try audioEngine.start()
-//
-//            if let result = result {
-//
-//                //音声認識の区切りの良いところで実行される。
-//                self.voiceStr = result.bestTranscription.formattedString
-//                print(result.bestTranscription.formattedString)
-//                isFinal = result.isFinal
-//            }
-//
-//            if error != nil || isFinal {
-//                self.audioEngine.stop()
-//                inputNode.removeTap(onBus: 0)
-//
-//                self.recognitionRequest = nil
-//                self.recognitionTask = nil
-//
-//                self.recordButton.isEnabled = true
-//                self.recordButton.setTitle("Start Recording", for: [])
-//            }
-//        }
-//    }
-//
-//    // MARK: SFSpeechRecognizerDelegate
-//    //speechRecognizerが使用可能かどうかでボタンのisEnabledを変更する
-//    public func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-//        if available {
-//            recordButton.isEnabled = true
-//            recordButton.setTitle("Start Recording", for: [])
-//
-//        } else {
-//            recordButton.isEnabled = false
-//            recordButton.setTitle("Recognition not available", for: .disabled)
-//        }
-//    }
-    
-    
-    
     //ボタンを押した時に、編集画面へ遷移する。
     //ボタンの位置は暫定
     @IBAction func goToEditViewButton(_ sender: Any) {
         performSegue(withIdentifier: "toEditView", sender: nil)
     }
     
-    
-    
-//    //「追加」　背景を黒い画面に変更できるオプションを追加
-    
-
     
     
     /* 参考URL
