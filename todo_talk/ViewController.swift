@@ -11,7 +11,7 @@ import Lottie
 import Speech
 
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIScrollViewDelegate,SFSpeechRecognizerDelegate {
+class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIScrollViewDelegate,SFSpeechRecognizerDelegate,UIGestureRecognizerDelegate {
     
     //録音の開始、停止ボタン
     @IBOutlet weak var recordButton: UIButton!
@@ -39,6 +39,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //マイク入力ボタンのアニメーション
     //録音の開始、停止ボタン
     @IBOutlet weak var micAnimation: LOTAnimationView!
+    //マイクのタップ数を検知する
+    @IBOutlet var singleTapGesture: UITapGestureRecognizer!
+    @IBOutlet var doubleTapGesture: UITapGestureRecognizer!
+    //最初のシングルタップのときだけ、else(入力無し処理)をパスする
+    var beforeFirstSingleTap = false
+    //2回目のシングルタップ以降は、レコードストップ、レコードスタートの順で実行させる
+    var afterFirstSingleTap = false
+    
+    
+    
     //タスク達成時のLottieアニメーション
     var deletedAnimationView = LOTAnimationView()
     //音声入力中のアニメーション
@@ -118,6 +128,15 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 //        deletedAnimationView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
 //        self.view.addSubview(deletedAnimationView)
 //        deletedAnimationView.isHidden = true
+        
+//        //tapGestureのデリゲートをself(viewcontroller)にセット
+//        singleTapGesture.delegate = self
+//        doubleTapGesture.delegate = self
+//        //tapGestureのタップ数を定義 シングルは1回、ダブルは2回
+//        singleTapGesture.numberOfTapsRequired = 1
+//        doubleTapGesture.numberOfTapsRequired = 2
+//        //tapGestureのコードが共存できるようにする
+//        singleTapGesture.require(toFail: doubleTapGesture)
         
         
         //todoTableViewのデリゲートメソッド宣言
@@ -240,6 +259,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     
+    
+    
+    
+    
     //キーボード入力時に画面を上側にスライドさせる実装コードの続き
     @objc func keyboardWillShow(_ notification:NSNotification){
         let keyboardHeight = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue.height
@@ -277,6 +300,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             
         }
     }
+    
+    
+    
+    
     
     
     
@@ -331,13 +358,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         let myOkAction = UIAlertAction(title: "OK", style: .default) { action in
             print("Action OK!!")
         
-                self.todoArray.append(self.voiceStr)
-                UserDefaults.standard.set(self.todoArray, forKey: "todo")
-                self.todoTableView.reloadData()
-                self.voiceStr = ""
-                self.recordButton.isEnabled = true
+            //20190630近藤削除　マイクボタンを押したときに直で起動できるように実装コードを移動
+//                self.todoArray.append(self.voiceStr)
+//                UserDefaults.standard.set(self.todoArray, forKey: "todo")
+//                self.todoTableView.reloadData()
+//                self.voiceStr = ""
+//                self.recordButton.isEnabled = true
             
-//            self.micRecordButtonPush()
             
             }
 
@@ -399,12 +426,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @objc func toCheckedDoneLottieAction(_ sender:UIButton){
         //チェックマークを押すと、Lottieがアニメーションする
-//        let checkedDone = cell.viewWithTag(2) as! LOTAnimationView
-//        startCheckOKAnimation()
-//        checkedDone.isHidden = false
-//        checkedDone.setAnimation(named: "433-checked-done")
-//        checkedDone.layer.zPosition = 1
-//        checkedDone.loopAnimation = false
+        let checkedDone = sender.viewWithTag(2) as! LOTAnimationView
+        startCheckOKAnimation()
+        checkedDone.isHidden = false
+        checkedDone.setAnimation(named: "433-checked-done")
+        checkedDone.layer.zPosition = 1
+        checkedDone.loopAnimation = false
 
         //参考URL
         //https://qiita.com/nmisawa/items/6ffbe6b3c7f2c474c74f
@@ -554,31 +581,187 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     //録音ボタンが押されたら音声認識をスタートする
     @IBAction func micRecordButton(_ sender: Any) {
-       micRecordButtonPush()
-    }
-    
-    
-    //20190615近藤追加
-    //マイクボタンを押したときのアクションを定義、こちらを音声入力無しに入れる
-    func micRecordButtonPush(){
-        micButtonTouchesOrNot = true
+//
+//        //シングルタップ時に実行するアニメーション
+//        if (sender as AnyObject).numberOfTapsRequired == 1 {
+//
+//            //最初のタップのみ、startRecording()を行う
+//            if beforeFirstSingleTap != true {
+//            try! startRecording()
+//            recordButton.setTitle("Stop recording", for: [])
+//            }
+//
+//
+//            micButtonTouchesOrNot = true
+//
+//            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+//                self.inputTalkMode()
+//
+//            }, completion: nil)
+//
+//
+//            print("singleTapRecording")
+//
+//            //audioEngineが二週目以降falseになっている・・・
+//            print(audioEngine.isRunning)
+//
+//
+//            if audioEngine.isRunning {
+//
+//                //2回目以降は「録音開始」と「録音ストップ」を繰り返させる
+//                if afterFirstSingleTap != false {
+//                audioEngine.stop()
+//                recognitionRequest?.endAudio()
+//                recordButton.isEnabled = false
+//                recordButton.setTitle("Stopping", for: .disabled)
+//                //録音が停止した
+//                print("録音停止")
+//
+//                    //ここでafterFirstSingTapをtrueにしてもBoolが変更できないようだ・・・
+//                    afterFirstSingleTap = true
+//                    print(afterFirstSingleTap)
+//                }
+//
+//            if voiceStr.isEmpty != true {
+//                //入力された文字列の入った文字列を表示
+//                //入力された文字がリアルタイムで表示されない・・・
+//                //希望はテーブルビューに直接文字を書き込みたい
+//                inputVoiceLabel.frame = CGRect(x: 0, y: view.frame.size.width / 3, width: view.frame.size.width, height: view.frame.size.height)
+//                inputVoiceLabel.textAlignment = NSTextAlignment.center
+//                inputVoiceLabel.font = UIFont.systemFont(ofSize: 30)
+//                inputVoiceLabel.text = voiceStr
+//                view.addSubview(inputVoiceLabel)
+//                UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+//                    self.waitingView()
+//                }, completion: nil)
+//
+//                //藤井さん追加20190610
+//                self.todoArray.append(self.voiceStr)
+//                UserDefaults.standard.set(self.todoArray, forKey: "todo")
+//                self.todoTableView.reloadData()
+//
+//                voiceStr = ""
+//
+//                try! startRecording()
+//                recordButton.setTitle("Stop recording", for: [])
+//
+//
+//            }else {
+//
+//                if beforeFirstSingleTap != false{
+//                //空の場合
+//                //                showStrAlert(str: self.voiceStr)
+//                showVoiceInputAlert()
+//
+//                //                Call can throw,but it is not marked with〜というエラーが出たのでtry!を実装
+//                //                https://teratail.com/questions/124347
+//                //                try! startRecording()
+//
+//                }
+//                    beforeFirstSingleTap = true
+//            }
+//                afterFirstSingleTap = true
+//            }
+//
+//
+//
+//        }
+//
+//        //ダブルタップ時に実行するアニメーション
+//        if (sender as AnyObject).numberOfTapsRequired == 2{
+//
+//            print("doubleTapRecording")
+//
+//            micButtonTouchesOrNot = true
+//
+//            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+//                self.inputTalkMode()
+//
+//            }, completion: nil)
+//
+//
+//
+//            if audioEngine.isRunning {
+//
+//
+//                    audioEngine.stop()
+//                    recognitionRequest?.endAudio()
+//                    recordButton.isEnabled = false
+//                    recordButton.setTitle("Stopping", for: .disabled)
+//                //録音が停止した
+//                print("録音停止")
+//
+//
+//                    if voiceStr.isEmpty != true {
+//                        //入力された文字列の入った文字列を表示
+//                        //入力された文字がリアルタイムで表示されない・・・
+//                        //希望はテーブルビューに直接文字を書き込みたい
+//                        inputVoiceLabel.frame = CGRect(x: 0, y: view.frame.size.width / 3, width: view.frame.size.width, height: view.frame.size.height)
+//                        inputVoiceLabel.textAlignment = NSTextAlignment.center
+//                        inputVoiceLabel.font = UIFont.systemFont(ofSize: 30)
+//                        inputVoiceLabel.text = voiceStr
+//                        view.addSubview(inputVoiceLabel)
+//                        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+//                            self.waitingView()
+//                        }, completion: nil)
+//
+//                        //藤井さん追加20190610
+//                        self.todoArray.append(self.voiceStr)
+//                        UserDefaults.standard.set(self.todoArray, forKey: "todo")
+//                        self.todoTableView.reloadData()
+//
+//                        //音声入力、最初のシングルタップ検知のboolを元に戻す
+//                        beforeFirstSingleTap = false
+//
+//                    }else {
+//                        //空の場合
+//                        //                showStrAlert(str: self.voiceStr)
+//                        showVoiceInputAlert()
+//
+//                        //                Call can throw,but it is not marked with〜というエラーが出たのでtry!を実装
+//                        //                https://teratail.com/questions/124347
+//                        //                try! startRecording()
+//
+//                    }
+//
+//            }else {
+//                try! startRecording()
+//                recordButton.setTitle("Stop recording", for: [])
+//
+//            }
+//
+//            print("voiceStr")
+//
+//        }
+//
+//    }
         
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
-            self.inputTalkMode()
-        }, completion: nil)
+        
+        
+            
+            
+    
+    
+    
+            
+            
+     //20190619近藤追加
+    //ここに以前のコードを載せています
+        
+        
         if audioEngine.isRunning {
             audioEngine.stop()
             recognitionRequest?.endAudio()
             recordButton.isEnabled = false
             recordButton.setTitle("Stopping", for: .disabled)
-            //録音が停止した！
+//            録音が停止した！
             print("録音停止")
-            
-            
+    
+
             if voiceStr.isEmpty != true {
-                //入力された文字列の入った文字列を表示
-                //入力された文字がリアルタイムで表示されない・・・
-                //希望はテーブルビューに直接文字を書き込みたい
+//                入力された文字列の入った文字列を表示
+//                入力された文字がリアルタイムで表示されない・・・
+//                希望はテーブルビューに直接文字を書き込みたい
                 inputVoiceLabel.frame = CGRect(x: 0, y: view.frame.size.width / 3, width: view.frame.size.width, height: view.frame.size.height)
                 inputVoiceLabel.textAlignment = NSTextAlignment.center
                 inputVoiceLabel.font = UIFont.systemFont(ofSize: 30)
@@ -587,33 +770,49 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                     self.waitingView()
                 }, completion: nil)
-                
-                showStrAlert(str: self.voiceStr)
-                
-                //藤井さん追加20190610
+
+//                showStrAlert(str: self.voiceStr)
+
                 self.todoArray.append(self.voiceStr)
                 UserDefaults.standard.set(self.todoArray, forKey: "todo")
                 self.todoTableView.reloadData()
+                self.voiceStr = ""
+                self.recordButton.isEnabled = true
+
                 
                 
+                
+                //藤井さん追加20190610
+//                self.todoArray.append(self.voiceStr)
+//                UserDefaults.standard.set(self.todoArray, forKey: "todo")
+//                self.todoTableView.reloadData()
+
+
             }else {
                 //空の場合
                 //                showStrAlert(str: self.voiceStr)
                 showVoiceInputAlert()
-                
                 //                Call can throw,but it is not marked with〜というエラーが出たのでtry!を実装
                 //                https://teratail.com/questions/124347
                 //                try! startRecording()
             }
-            
         } else {
             try! startRecording()
             recordButton.setTitle("Stop recording", for: [])
-            
+
         }
-        
+
         print("voiceStr")
+
     }
+    
+    
+    
+   
+    
+    
+    
+    
     
     
     
