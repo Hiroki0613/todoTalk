@@ -424,18 +424,26 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return todoArray.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = todoTableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath) as! TodoTableViewCell
+        let cell = todoTableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
 
+        let todoTableViewCellTextField = cell.contentView.viewWithTag(1) as! UITextField
+        
         let item = listItems[indexPath.row]
-        cell.listItems = item
+        
+        var listItems:ListItem? {
+            didSet {
+                todoTableViewCellTextField.text = listItems?.text
+            }
+        }
+        
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
         if UserDefaults.standard.object(forKey: "todo") != nil{
             todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
         }
-        cell.todoTableViewCellTextField.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
-        cell.todoTableViewCellTextField.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
-        cell.todoTableViewCellTextField.text = todoArray[indexPath.row]
+        todoTableViewCellTextField.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
+        todoTableViewCellTextField.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
+        todoTableViewCellTextField.text = todoArray[indexPath.row]
         
         
         //20190630近藤追加　チェックマークが押される前は、空白のマルを入れる

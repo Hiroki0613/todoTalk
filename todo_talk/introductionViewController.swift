@@ -17,7 +17,7 @@ class introductionViewController: UIViewController {
     @IBOutlet weak var introductionScrollView: UIScrollView!
 
     //文面は中央に設置する。
-   var introductionTitleArray =  ["アプリをインストールしていただき。ありがとうございます。これからどのように使用するのかのチュートリアルを表示します。画面をスワイプしてください","このアプリの特徴は音声入力でTODOタスクを追加できることです","マイクボタンをタップすることで、音声が入力できます","再びタップすることでTODOへ追加することができます","音声入力を間違えても大丈夫です。直接タスクをタップすることで編集ができます","もちろん、手入力も可能です。ただし、使い勝手が少し悪いです(汗)","先に文字を入力してから右下のプラスボタンを押してください","これで説明を終わります。"]
+   var introductionTitleArray =  ["アプリをインストールしていただき。\nありがとうございます。\nこれからどのように使用するのかの\nチュートリアルを表示します。\n画面をスワイプしてください","このアプリの特徴は音声入力で\nTODOタスクを追加できることです","マイクボタンをタップすることで、\n音声が入力できます","再びタップすることで\nTODOへ追加することができます","音声入力を間違えても大丈夫です。\n直接タスクをタップすることで編集ができます","もちろん、手入力も可能です。\nただし、使い勝手が少し悪いです(汗)","先に文字を入力してから\n右下のプラスボタンを押してください","これで説明を終わります。"]
     
     //実際の操作画面をスクリーンショットで撮影し、introduction画像として使用する
     var introductionImageArray = ["introduction0","introduction1","introduction2","introduction3","introduction4","introduction5","introduction6","introduction7"]
@@ -49,7 +49,7 @@ class introductionViewController: UIViewController {
         
         //スクロールビューを貼り付ける
         
-        introductionScrollView.contentSize = CGSize(width: view.frame.size.width * 2, height: view.frame.size.height)
+        introductionScrollView.contentSize = CGSize(width: view.frame.size.width * 8, height: view.frame.size.height)
         
         
         for i in 0...7 {
