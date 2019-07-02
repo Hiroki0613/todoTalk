@@ -20,10 +20,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //スクリーンサイズを取得
     let SCREEN_SIZE = UIScreen.main.bounds.size
     
-    
-    
+    //todoTableViewCellの継承のため初期化
+//    var todoTableViewCell = TodoTableViewCell(coder: NSCoder)
+    var listItems = [ListItem]()
+
     //TODOを入力するテキストフィールド
     @IBOutlet weak var inputTodoTextFields: UITextField!
+    
+    //音声入力時に、別枠でTextFieldを表すために実装
+    let voiceTalkText = UITextField()
+
     
     //tableView、背景は透明にする。
     @IBOutlet weak var todoTableView: UITableView!
@@ -97,6 +103,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 //** 削除予定
     //音声入力結果をUILabelで表示
     var inputVoiceLabel = UILabel()
+    
+    
     
     
     
@@ -217,7 +225,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             let voiceTalkSupport = UILabel()
             voiceTalkSupport.layer.zPosition = 1
             voiceTalkSupport.frame = CGRect(x: 0, y: view.frame.size.width/3, width: view.frame.size.width, height: view.frame.size.height/4)
-            voiceTalkSupport.text = "シングルタップでタスク追加\n\nダブルタップで音声入力終了"
+//            voiceTalkSupport.text = "シングルタップでタスク追加\n\nダブルタップで音声入力終了"
+            voiceTalkSupport.text = "タップするとタスクに追加されます"
             voiceTalkSupport.font = UIFont.init(name: "HiraMaruProN-W4", size: 22)
          //   systemFont(ofSize: 28)
             voiceTalkSupport.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
@@ -232,7 +241,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             //20190613近藤追加
             //音声入力時にリアルタイムで文字が入力されているのを確認するため実装
             //なぜかうまくいかない・・・、要検討
-            let voiceTalkText = UITextView()
+//            let voiceTalkText = UITextField()
             voiceTalkText.frame = CGRect(x: 0, y: view.frame.size.width/5*4, width: view.frame.size.width, height: view.frame.size.height/4)
             voiceTalkText.layer.zPosition = 1
             voiceTalkText.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
@@ -246,11 +255,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             //文字をリアルタイムで入力
             voiceTalkText.text = voiceStr
 
+            voiceTalkText.addTarget(self, action: #selector(changeText(_:)), for: .editingChanged)
             //リアルタイムで入力後に文字を削除(リアルタイムで入力されないためコメントアウトしています)
 //            voiceTalkText.text = ""
                         
             
         }
+    
+    @objc func changeText(_ textField: UITextField)  {
+        
+        //20190630近藤追加　本当はTableViewでダイレクトに入力されて欲しかったが、出来なかったので別枠で表示にした
+        voiceTalkText.text = textField.text
+//        todoTableViewCellTextField.text = textField.text
+    }
     
     
     
@@ -407,35 +424,60 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return todoArray.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = todoTableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
-     
-        //チェックマックが押される前は、空白のマルを入れる
-        let checkedBeforeImage = cell.viewWithTag(1) as! UIButton
-        
-        //セレクターを使って、UIButtonをプッシュした時に、Lottieアニメーションを出すように設定したが、実現できず・・・。
-        checkedBeforeImage.addTarget(self, action: "toCheckedDoneLottieAction", for: .touchUpInside)
-        
-     
-        let label = cell.viewWithTag(3) as! UILabel
+        let cell = todoTableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath) as! TodoTableViewCell
+
+        let item = listItems[indexPath.row]
+        cell.listItems = item
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+
         if UserDefaults.standard.object(forKey: "todo") != nil{
             todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
         }
-        label.text = todoArray[indexPath.row]
+        cell.todoTableViewCellTextField.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
+        cell.todoTableViewCellTextField.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
+        cell.todoTableViewCellTextField.text = todoArray[indexPath.row]
+        
+        
+        //20190630近藤追加　チェックマークが押される前は、空白のマルを入れる
+        if let btnChk = cell.contentView.viewWithTag(2) as? UIButton {
+            btnChk.addTarget(self, action: #selector(checkboxClicked(_ :)), for: .touchUpInside)
+        }
+        
+        
+//        //チェックマックが押される前は、空白のマルを入れる
+//        let checkedBeforeImage = cell.viewWithTag(1) as! UIButton
+//
+//        //セレクターを使って、UIButtonをプッシュした時に、Lottieアニメーションを出すように設定したが、実現できず・・・。
+//        checkedBeforeImage.addTarget(self, action: "toCheckedDoneLottieAction", for: .touchUpInside)
+        
+     
+        
+        
+//        let label = cell.viewWithTag(3) as! UILabel
+//        if UserDefaults.standard.object(forKey: "todo") != nil{
+//            todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
+//        }
+//        label.text = todoArray[indexPath.row]
         return cell
     }
     
-    @objc func toCheckedDoneLottieAction(_ sender:UIButton){
-        //チェックマークを押すと、Lottieがアニメーションする
-        let checkedDone = sender.viewWithTag(2) as! LOTAnimationView
-        startCheckOKAnimation()
-        checkedDone.isHidden = false
-        checkedDone.setAnimation(named: "433-checked-done")
-        checkedDone.layer.zPosition = 1
-        checkedDone.loopAnimation = false
-
-        //参考URL
-        //https://qiita.com/nmisawa/items/6ffbe6b3c7f2c474c74f
+    @objc func checkboxClicked(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
     }
+
+    
+//    @objc func toCheckedDoneLottieAction(_ sender:UIButton){
+//        //チェックマークを押すと、Lottieがアニメーションする
+//        let checkedDone = sender.viewWithTag(2) as! LOTAnimationView
+//        startCheckOKAnimation()
+//        checkedDone.isHidden = false
+//        checkedDone.setAnimation(named: "433-checked-done")
+//        checkedDone.layer.zPosition = 1
+//        checkedDone.loopAnimation = false
+//
+//        //参考URL
+//        //https://qiita.com/nmisawa/items/6ffbe6b3c7f2c474c74f
+//    }
     
     
     
@@ -747,6 +789,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             
      //20190619近藤追加
     //ここに以前のコードを載せています
+        
+        micButtonTouchesOrNot = true
+        
+        //20190630近藤追加　ブラー、マイクの波紋が出るようにした。
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+                            self.inputTalkMode()
+                        }, completion: nil)
         
         
         if audioEngine.isRunning {

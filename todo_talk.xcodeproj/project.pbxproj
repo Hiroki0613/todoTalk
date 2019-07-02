@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		EAA8F4DC125F6046B99DE1E2 /* Pods_todo_talk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */; };
+		F529634622C888C900D6663A /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F529634522C888C900D6663A /* ListItem.swift */; };
+		F529634F22C8902000D6663A /* TodoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F529634D22C8902000D6663A /* TodoTableViewCell.swift */; };
+		F529635022C8902000D6663A /* TodoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F529634E22C8902000D6663A /* TodoTableViewCell.xib */; };
+		F529635222C8C78900D6663A /* introductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F529635122C8C78900D6663A /* introductionViewController.swift */; };
 		F54E4AE822A133BE00404021 /* todoMic.json in Resources */ = {isa = PBXBuildFile; fileRef = F54E4AE722A133BE00404021 /* todoMic.json */; };
 		F552F1CF22984C52006EF2EA /* 734-circle-grow.json in Resources */ = {isa = PBXBuildFile; fileRef = F552F1CE22984C52006EF2EA /* 734-circle-grow.json */; };
 		F552F1F5229917A4006EF2EA /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F552F1F4229917A4006EF2EA /* EditViewController.swift */; };
@@ -24,6 +28,10 @@
 		14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_todo_talk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D56E3CAB2621119EA97B3B0 /* Pods-todo_talk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.release.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.release.xcconfig"; sourceTree = "<group>"; };
 		D836C9902B7BF006F32AFD4D /* Pods-todo_talk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.debug.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.debug.xcconfig"; sourceTree = "<group>"; };
+		F529634522C888C900D6663A /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
+		F529634D22C8902000D6663A /* TodoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewCell.swift; sourceTree = "<group>"; };
+		F529634E22C8902000D6663A /* TodoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TodoTableViewCell.xib; sourceTree = "<group>"; };
+		F529635122C8C78900D6663A /* introductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = introductionViewController.swift; sourceTree = "<group>"; };
 		F54E4AE722A133BE00404021 /* todoMic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = todoMic.json; sourceTree = "<group>"; };
 		F552F1CE22984C52006EF2EA /* 734-circle-grow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "734-circle-grow.json"; sourceTree = "<group>"; };
 		F552F1F4229917A4006EF2EA /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
@@ -93,12 +101,16 @@
 				F552F1CE22984C52006EF2EA /* 734-circle-grow.json */,
 				F5EB15E5224F4EF3004B57CF /* 3787-jumping-mic.json */,
 				F5D70188224BC51700530800 /* AppDelegate.swift */,
+				F529635122C8C78900D6663A /* introductionViewController.swift */,
 				F5D7018A224BC51700530800 /* ViewController.swift */,
+				F529634D22C8902000D6663A /* TodoTableViewCell.swift */,
+				F529634E22C8902000D6663A /* TodoTableViewCell.xib */,
+				F552F1F4229917A4006EF2EA /* EditViewController.swift */,
+				F529634522C888C900D6663A /* ListItem.swift */,
 				F5D7018C224BC51700530800 /* Main.storyboard */,
 				F5D7018F224BC51B00530800 /* Assets.xcassets */,
 				F5D70191224BC51B00530800 /* LaunchScreen.storyboard */,
 				F5D70194224BC51B00530800 /* Info.plist */,
-				F552F1F4229917A4006EF2EA /* EditViewController.swift */,
 			);
 			path = todo_talk;
 			sourceTree = "<group>";
@@ -171,6 +183,7 @@
 				F552F1CF22984C52006EF2EA /* 734-circle-grow.json in Resources */,
 				F5EB15E7224F4EF3004B57CF /* 3787-jumping-mic.json in Resources */,
 				F5EB15E8224F4EF3004B57CF /* 433-checked-done.json in Resources */,
+				F529635022C8902000D6663A /* TodoTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,8 +241,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F529635222C8C78900D6663A /* introductionViewController.swift in Sources */,
+				F529634622C888C900D6663A /* ListItem.swift in Sources */,
 				F552F1F5229917A4006EF2EA /* EditViewController.swift in Sources */,
 				F5D7018B224BC51700530800 /* ViewController.swift in Sources */,
+				F529634F22C8902000D6663A /* TodoTableViewCell.swift in Sources */,
 				F5D70189224BC51700530800 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

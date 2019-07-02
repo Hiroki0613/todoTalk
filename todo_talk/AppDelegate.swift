@@ -15,10 +15,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
+        //使用するStoryBoardのインスタンス化
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        
+        // UserDefaultsにbool型のKey"launchedBefore"を用意
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        
+        if(launchedBefore == true) {
+            //動作確認のために1回実行ごとに値をfalseに設定し直す
+            UserDefaults.standard.set(false, forKey: "launchedBefore")
+        } else {
+            //起動を判定するlaunchedBeforeという論理型のKeyをUserDefaultsに用意
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+            //チュートリアル用のViewControllerのインスタンスを用意してwindowに渡す
+            let introductionVC = storyBoard.instantiateViewController(withIdentifier: "introductionViewController") as! introductionViewController
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            self.window?.rootViewController = introductionVC
+        }
+        
         return true
     }
+    
+    /*
+     参考サイト
+     iOSアプリ開発メモ No.21 -初回起動時のみ開くView Controller-
+     http://sona.hateblo.jp/entry/2018/03/01/210105
+     */
+    
 
+    
+    
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
