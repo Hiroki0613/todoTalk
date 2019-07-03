@@ -8,19 +8,18 @@
 
 import UIKit
 
-class introductionViewController: UIViewController {
+class introductionViewController: UIViewController,UIScrollViewDelegate {
     
     
     @IBOutlet weak var goToMainView: UIButton!
-    
-    
     @IBOutlet weak var introductionScrollView: UIScrollView!
-
+    @IBOutlet weak var introductionPageControl: UIPageControl!
+    
     //文面は中央に設置する。
-   var introductionTitleArray =  ["アプリをインストールしていただき。\nありがとうございます。\nこれからどのように使用するのかの\nチュートリアルを表示します。\n画面をスワイプしてください","このアプリの特徴は音声入力で\nTODOタスクを追加できることです","マイクボタンをタップすることで、\n音声が入力できます","再びタップすることで\nTODOへ追加することができます","音声入力を間違えても大丈夫です。\n直接タスクをタップすることで編集ができます","もちろん、手入力も可能です。\nただし、使い勝手が少し悪いです(汗)","先に文字を入力してから\n右下のプラスボタンを押してください","これで説明を終わります。"]
+   var introductionTitleArray =  ["チュートリアルを表示します。\n画面を左へスワイプしてください","このアプリは音声入力で\nタスクを追加できます","マイクをタップすることで、\n音声入力できます","再びタップすることで\nタスクへ追加します","入力したタスクは直接タップ\nすることで編集ができます","もちろん、手入力も可能です。\nただし、使い勝手が少し悪いです(汗)","先に文字を入力してから\n右下のプラスボタンを押してください","タスクの消去は右上のEditを押して","赤文字のDeleteを押したら削除出来ます","これで説明を終わります。"]
     
     //実際の操作画面をスクリーンショットで撮影し、introduction画像として使用する
-    var introductionImageArray = ["introduction0","introduction1","introduction2","introduction3","introduction4","introduction5","introduction6","introduction7"]
+    var introductionImageArray = ["introduction0","introduction1","introduction2","introduction3","introduction4","introduction5","introduction6","introduction7","introduction7","introduction7"]
 
     
    
@@ -28,19 +27,22 @@ class introductionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        introductionScrollView.delegate = self
         //「さあ、使ってみよう」ボタンを隠す
         goToMainView.isHidden = true
-
+        
         introductionScrollView.isPagingEnabled = true
         
         setUpScroll()
         
-        for i in 0...7 {
+        for i in 0...9 {
             
-            let introductionView = UIImageView()
-            introductionView.frame = CGRect(x: CGFloat(i) * view.frame.size.width, y: 0, width: view.frame.size.width, height: view.frame.size.height)
-            introductionView.contentMode = .scaleAspectFit
-            introductionScrollView.addSubview(introductionView)
+            let introductionImageView = UIImageView()
+            introductionImageView.frame = CGRect(x: CGFloat(i) * self.view.frame.size.width, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height/4*3)
+            introductionImageView.image = UIImage(named: "\(introductionImageArray[i]).jpg")
+            introductionImageView.contentMode = .scaleAspectFit
+            introductionImageView.layer.zPosition = -1
+            introductionScrollView.addSubview(introductionImageView)
         }
     }
     
@@ -49,29 +51,39 @@ class introductionViewController: UIViewController {
         
         //スクロールビューを貼り付ける
         
-        introductionScrollView.contentSize = CGSize(width: view.frame.size.width * 8, height: view.frame.size.height)
+        introductionScrollView.contentSize = CGSize(width: self.view.frame.size.width * 10, height: self.view.frame.size.height)
         
         
-        for i in 0...7 {
+        for i in 0...9 {
             
             let introductionLabel = UILabel(frame: CGRect(x: CGFloat(i) * view.frame.size.width, y: view.frame.size.height/3, width: introductionScrollView.frame.size.width, height: introductionScrollView.frame.size.height))
             
-            introductionLabel.font = UIFont.boldSystemFont(ofSize: 15.0)
-            introductionLabel.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
+            introductionLabel.numberOfLines = 2
+            introductionLabel.font = UIFont.init(name: "HiraMaruProN-W4", size: 16)
             introductionLabel.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
             introductionLabel.textAlignment = .center
             introductionLabel.text = introductionTitleArray[i]
             introductionScrollView.addSubview(introductionLabel)
 
             //ページの最後(8ページ目)のみ「さあ、使ってみよう！」ボタンを表示
-            if i == 7 {
-                goToMainView.isHidden = false
-            } else {
-                //念の為、1から7ページ目はボタンを隠すようにする
-                goToMainView.isHidden = true
-            }
+//            if i == 7 {
+//                goToMainView.isHidden = false
+//            } else {
+//                //念の為、1から7ページ目はボタンを隠すようにする
+//                goToMainView.isHidden = true
+//            }
         }
     }
+    
+    func scrollViewDidScroll(_ introductionScrollView: UIScrollView) {
+        
+        introductionPageControl.currentPage = Int(introductionScrollView.contentOffset.x / introductionScrollView.frame.size.width)
+        
+        if introductionPageControl.currentPage == 9 {
+            goToMainView.isHidden = false
+        }
+    }
+    
     
     
     @IBAction func introductionSkipButton(_ sender: Any) {
@@ -80,6 +92,11 @@ class introductionViewController: UIViewController {
     }
     
 
+    @IBAction func goToMainViewButton(_ sender: Any) {
+        performSegue(withIdentifier: "introductionEnd", sender: nil)
+    }
+    
+    
     /*
     // MARK: - Navigation
 

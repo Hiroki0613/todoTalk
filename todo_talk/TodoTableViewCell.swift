@@ -10,15 +10,6 @@ import UIKit
 
 class TodoTableViewCell: UITableViewCell,UITextFieldDelegate {
     
-    @IBOutlet weak var todoTableViewCellTextField: UITextField!
-    
-    var listItems:ListItem? {
-        didSet {
-            todoTableViewCellTextField.text = listItems?.text
-        }
-    }
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

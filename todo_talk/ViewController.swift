@@ -428,7 +428,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
         let todoTableViewCellTextField = cell.contentView.viewWithTag(1) as! UITextField
         
-        let item = listItems[indexPath.row]
+//        let item = listItems[indexPath.row]
         
         var listItems:ListItem? {
             didSet {
