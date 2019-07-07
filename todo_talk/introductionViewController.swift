@@ -16,7 +16,7 @@ class introductionViewController: UIViewController,UIScrollViewDelegate {
     @IBOutlet weak var introductionPageControl: UIPageControl!
     
     //文面は中央に設置する。
-   var introductionTitleArray =  ["チュートリアルを表示します。\n画面を左へスワイプしてください","このアプリは音声入力で\nタスクを追加できます","マイクをタップすることで、\n音声入力できます","再びタップすることで\nタスクへ追加します","入力したタスクは直接タップ\nすることで編集ができます","もちろん、手入力も可能です。\nただし、使い勝手が少し悪いです(汗)","先に文字を入力してから\n右下のプラスボタンを押してください","タスクの消去は右上のEditを押して","赤文字のDeleteを押したら削除出来ます","これで説明を終わります。"]
+   var introductionTitleArray =  ["チュートリアルを表示します\n画面を左へスワイプしてください","このアプリは音声入力で\nタスクを追加できます","マイクをタップすることで\n音声入力できます","再びタップすることで\nタスクへ追加します","入力したタスクは直接タップ\nすることで編集ができます","もちろん手入力も可能です。\nただし使い勝手が少し悪いです(汗)","先に文字を入力してから\n右下のプラスボタンを押してください","タスクの消去は右上のEditを押して","左の赤い記号を押し\nDeleteで削除出来ます","これで説明を終わります。"]
     
     //実際の操作画面をスクリーンショットで撮影し、introduction画像として使用する
     var introductionImageArray = ["introduction0","introduction1","introduction2","introduction3","introduction4","introduction5","introduction6","introduction7","introduction7","introduction7"]
@@ -38,7 +38,7 @@ class introductionViewController: UIViewController,UIScrollViewDelegate {
         for i in 0...9 {
             
             let introductionImageView = UIImageView()
-            introductionImageView.frame = CGRect(x: CGFloat(i) * self.view.frame.size.width, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height/4*3)
+            introductionImageView.frame = CGRect(x: CGFloat(i) * self.view.frame.size.width, y: self.view.frame.size.height/20, width: self.view.frame.size.width, height: self.view.frame.size.height/4*3 - self.view.frame.size.height/20)
             introductionImageView.image = UIImage(named: "\(introductionImageArray[i]).jpg")
             introductionImageView.contentMode = .scaleAspectFit
             introductionImageView.layer.zPosition = -1
@@ -46,6 +46,11 @@ class introductionViewController: UIViewController,UIScrollViewDelegate {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.isNavigationBarHidden = true
+    }
     
     func setUpScroll() {
         
@@ -88,6 +93,12 @@ class introductionViewController: UIViewController,UIScrollViewDelegate {
     
     @IBAction func introductionSkipButton(_ sender: Any) {
         
+        //show
+//        let viewVC = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+//
+//        navigationController?.pushViewController(viewVC, animated: true)
+        
+        //モーダルで遷移
         performSegue(withIdentifier: "introductionEnd", sender: nil)
     }
     

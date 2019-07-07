@@ -11,7 +11,11 @@ import Lottie
 import Speech
 
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIScrollViewDelegate,SFSpeechRecognizerDelegate,UIGestureRecognizerDelegate {
+class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIScrollViewDelegate,SFSpeechRecognizerDelegate,UIGestureRecognizerDelegate,UITextViewDelegate {
+    
+//    var todoTableViewCellTextField = UITextField()
+    var checkflag = false
+    var checkIndex = Int()
     
     //録音の開始、停止ボタン
     @IBOutlet weak var recordButton: UIButton!
@@ -26,16 +30,20 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
     //TODOを入力するテキストフィールド
     @IBOutlet weak var inputTodoTextFields: UITextField!
-    
+   var todoTableViewCellTextField = UITextField()
     //音声入力時に、別枠でTextFieldを表すために実装
-    let voiceTalkText = UITextField()
+//    let voiceTalkText = UITextField()
+    let voiceTalkText = UITextView()
+    //音声入力をリアルタイムで反映させるための処置。1回目のみUITextFieldを作成する。
+    //二回目以降は1回目のUITextFieldに上書きをする。
+    var notFirstTimeInputRealTimeText = false
 
     
     //tableView、背景は透明にする。
     @IBOutlet weak var todoTableView: UITableView!
     
     //＋ボタンを表示しているView(音声入力時にViewを隠すためだけに使用)
-    @IBOutlet weak var addTodoView: UIButton!
+//    @IBOutlet weak var addTodoView: UIButton!
     
     //ボタンを押した時に、編集画面へ遷移する(音声入力時,文字入力時にViewを隠すためだけに使用)
     @IBOutlet weak var goToEditView: UIButton!
@@ -111,7 +119,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+//        todoTableViewCellTextField.delegate = self
 //波紋を設定
         circleGrowLottieAnimation()
         
@@ -151,6 +159,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         todoTableView.delegate = self
         todoTableView.dataSource = self
         inputTodoTextFields.delegate = self
+        
+//        inputTodoTextFields.attributedPlaceholder = NSAttributedString(string: "文字入力 → ＋ボタンでタスク追加",attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+
+        inputTodoTextFields.attributedPlaceholder = NSAttributedString(string: "文字入力 → ＋ボタンでタスク追加",attributes: [NSAttributedString.Key.foregroundColor:UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1)])
+            
+//        inputTodoTextFields.alpha = 0.7
+        inputTodoTextFields.tintColor.withAlphaComponent(0.7)
+        
         if UserDefaults.standard.object(forKey: "todo") != nil{
             //アプリ再開時にtodoリスト一覧が見られるようにする
             todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
@@ -174,6 +190,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationController?.isNavigationBarHidden = false
         
         //シンプルモードのSwitch判定
         mainSimpleModeChangeSwitch()
@@ -214,7 +231,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 //コードで実装した場合、ストーリーボードのような階層を作る方法がわからない・・・
         func inputTalkMode(){
 //            circleGrowLottieAnimation()
-            addTodoView.isHidden = true
+//            addTodoView.isHidden = true
             todoBlurVibrancyEffect.isHidden = false
             circleGrowLottieAnimationView.isHidden = false
             inputTodoTextFields.isHidden = true
@@ -226,7 +243,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             voiceTalkSupport.layer.zPosition = 1
             voiceTalkSupport.frame = CGRect(x: 0, y: view.frame.size.width/3, width: view.frame.size.width, height: view.frame.size.height/4)
 //            voiceTalkSupport.text = "シングルタップでタスク追加\n\nダブルタップで音声入力終了"
-            voiceTalkSupport.text = "タップするとタスクに追加されます"
+            voiceTalkSupport.numberOfLines = 2
+            voiceTalkSupport.text = "タップすると\nタスクに追加されます"
             voiceTalkSupport.font = UIFont.init(name: "HiraMaruProN-W4", size: 22)
          //   systemFont(ofSize: 28)
             voiceTalkSupport.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
@@ -234,40 +252,93 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             voiceTalkSupport.numberOfLines = 0
 //            voiceTalkSupport.frame = todoBlurVibrancyEffect.contentView.bounds
             todoBlurVibrancyEffect.contentView.addSubview(voiceTalkSupport)
+
+    
+    
+    }
+    
+    
             
             
             
             
+            func realTimeInputTalkIntoTextField() {
             //20190613近藤追加
             //音声入力時にリアルタイムで文字が入力されているのを確認するため実装
             //なぜかうまくいかない・・・、要検討
 //            let voiceTalkText = UITextField()
-            voiceTalkText.frame = CGRect(x: 0, y: view.frame.size.width/5*4, width: view.frame.size.width, height: view.frame.size.height/4)
-            voiceTalkText.layer.zPosition = 1
+//                voiceTalkText.borderStyle = .bezel
+            voiceTalkText.text = ""
+                
+            voiceTalkText.frame = CGRect(x: 20, y: view.frame.size.width/5*4, width: view.frame.size.width - 20, height: view.frame.size.height/4)
+            voiceTalkText.layer.zPosition = 4
             voiceTalkText.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
             //   systemFont(ofSize: 28)
             voiceTalkText.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
             voiceTalkText.backgroundColor = .clear
             voiceTalkText.textAlignment = .center
+            voiceTalkText.delegate = self
+                voiceTalkText.textAlignment = .left
 //            voiceTalkText.frame = todoBlurVibrancyEffect.contentView.bounds
             todoBlurVibrancyEffect.contentView.addSubview(voiceTalkText)
-
-            //文字をリアルタイムで入力
-            voiceTalkText.text = voiceStr
-
-            voiceTalkText.addTarget(self, action: #selector(changeText(_:)), for: .editingChanged)
-            //リアルタイムで入力後に文字を削除(リアルタイムで入力されないためコメントアウトしています)
-//            voiceTalkText.text = ""
-                        
+               
+ 
+                voiceTalkText.text = voiceStr
+                
+                
+                
+                //20190705近藤　ブラーでのみ表示して欲しかったので削除しました
+//                view.addSubview(voiceTalkText)
             
+            //20190703近藤追加　textFieldをリアルタイム同期させるために、透明なtextFieldを入れる
+//            let voiceTalkText2 = UITextField()
+//            voiceTalkText2.frame = CGRect(x: 0, y: view.frame.size.width/5*4, width: view.frame.size.width, height: view.frame.size.height/4)
+//            voiceTalkText2.layer.zPosition = 4
+//            voiceTalkText2.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
+//            //   systemFont(ofSize: 28)
+//            voiceTalkText2.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 0)
+//            voiceTalkText2.backgroundColor = .clear
+//            voiceTalkText2.textAlignment = .center
+//            //            voiceTalkText.frame = todoBlurVibrancyEffect.contentView.bounds
+//            todoBlurVibrancyEffect.contentView.addSubview(voiceTalkText2)
+//    }
+    
+//    func voiceToBlurVibrancyEffect() {
+//
+//        if notFirstTimeInputRealTimeText == false {
+//            realTimeInputTalkIntoTextField()
+//            voiceTalkText.addTarget(self, action: #selector(changeText(_:)), for: .editingChanged)
+//            voiceTalkText.text = voiceStr
+//            notFirstTimeInputRealTimeText = notFirstTimeInputRealTimeText + 1
+//        } else {
+//            voiceTalkText.text = voiceStr
+//        }
+    
+            //20190705近藤コメント　ここが何度も読み出されていた・・・
+            //文字をリアルタイムで入力
+//            voiceTalkText.text = voiceStr
+
+//            voiceTalkText.addTarget(self, action: #selector(changeText(_:)), for: .editingChanged)
+            //リアルタイムで入力後に文字を削除(リアルタイムで入力されないためコメントアウトしています)
         }
+    
+    
+    
+    
+    func textViewDidChange(_ textView: UITextView) {
+        
+        voiceTalkText.text = voiceStr
+        
+    }
     
     @objc func changeText(_ textField: UITextField)  {
         
         //20190630近藤追加　本当はTableViewでダイレクトに入力されて欲しかったが、出来なかったので別枠で表示にした
+//        voiceTalkText.text = ""
         voiceTalkText.text = textField.text
 //        todoTableViewCellTextField.text = textField.text
     }
+            
     
     
     
@@ -374,7 +445,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         // OKのアクションを作成する.
         let myOkAction = UIAlertAction(title: "OK", style: .default) { action in
             print("Action OK!!")
-        
             //20190630近藤削除　マイクボタンを押したときに直で起動できるように実装コードを移動
 //                self.todoArray.append(self.voiceStr)
 //                UserDefaults.standard.set(self.todoArray, forKey: "todo")
@@ -399,7 +469,21 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //リターンが押された時
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //キーボードを閉じる
-        inputTodoTextFields.resignFirstResponder()
+        if checkflag == true{
+            todoArray.append(todoTableViewCellTextField.text!)
+            print(todoArray.debugDescription)
+        }else if checkflag == false{
+            todoArray.append(inputTodoTextFields.text!)
+        }
+        if UserDefaults.standard.object(forKey: "todo") != nil{
+            todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
+        }
+        
+        UserDefaults.standard.set(todoArray, forKey: "todo")
+        todoTableView.reloadData()
+//        voiceTalkText.resignFirstResponder()
+//        inputTodoTextFields.resignFirstResponder()
+        textField.resignFirstResponder()
         return true
     }
     
@@ -423,11 +507,29 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         //todoTableViewの数だけセルを用意する
         return todoArray.count
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+
+//        if UserDefaults.standard.object(forKey: "todo") != nil{
+//            todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
+//        }
+
+        UserDefaults.standard.set(todoArray, forKey: "todo")
+
+        
+    }
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = todoTableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
 
-        let todoTableViewCellTextField = cell.contentView.viewWithTag(1) as! UITextField
+//        if UserDefaults.standard.object(forKey: "todo") != nil{
+//            todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
+//        }
         
+//        UserDefaults.standard.set(todoArray, forKey: "todo")
+    todoTableViewCellTextField = cell.contentView.viewWithTag(1) as! UITextField
+        todoTableViewCellTextField.delegate = self
 //        let item = listItems[indexPath.row]
         
         var listItems:ListItem? {
@@ -438,13 +540,17 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
-        if UserDefaults.standard.object(forKey: "todo") != nil{
-            todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
-        }
+        
+        
         todoTableViewCellTextField.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
         todoTableViewCellTextField.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
-        todoTableViewCellTextField.text = todoArray[indexPath.row]
         
+        print(todoArray.debugDescription)
+        
+        todoTableViewCellTextField.text = todoArray[indexPath.row]
+        //20190703近藤追加　キーボードを閉じる処理を追加
+//        todoTableViewCellTextField.resignFirstResponder()
+        todoTableViewCellTextField.delegate = self
         
         //20190630近藤追加　チェックマークが押される前は、空白のマルを入れる
         if let btnChk = cell.contentView.viewWithTag(2) as? UIButton {
@@ -519,6 +625,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 //画面遷移はされましたが、どのボタンを押しても一番上のセルが選ばれてしまう・・・
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        checkflag = true
+    checkIndex = indexPath.row
+        
 //        performSegue(withIdentifier: "toEditTaskView", sender: nil)
 //
 //        if inputTodoTextFields.resignFirstResponder() {
@@ -552,14 +661,60 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //todoに項目を追加、キー値をtodoにする
     //このボタンをプッシュした時に、キーボードが出てくるようにする。
     @IBAction func addTodo(_ sender: Any) {
-        if inputTodoTextFields.text?.isEmpty != true{
-        self.todoArray.append(inputTodoTextFields.text!)
-        UserDefaults.standard.set(self.todoArray,forKey: "todo")
-        self.todoTableView.reloadData()
-        inputTodoTextFields.text = ""
-        }else{
-            showTextInputAlert()
-        }
+        
+        
+        
+        //20190706近藤追加
+        //addTodoを押すと、新しいTableViewが編集できるようにする。
+//        let addTodoTextFields = self.view.viewWithTag(1) as! UITextField
+//
+//        if addTodoTextFields.text?.isEmpty != true {
+//            self.todoArray.append(addTodoTextFields.text!)
+//            UserDefaults.standard.set(self.todoArray,forKey: "todo")
+//            self.todoTableView.reloadData()
+//            addTodoTextFields.text = ""
+//        } else {
+//            addTodoTextFields.text = ""
+//            addTodoTextFields.addSubview(todoTableView)
+//            addTodoTextFields.becomeFirstResponder()
+//        }
+//
+        
+        
+//        if todoTableViewCellTextField.text?.isEmpty != true{
+//            self.todoArray.append(todoTableViewCellTextField.text!)
+//            UserDefaults.standard.set(self.todoArray,forKey: "todo")
+//            self.todoTableView.reloadData()
+//            todoTableViewCellTextField.text = ""
+//           todoTableViewCellTextField.becomeFirstResponder()
+
+//        }else{
+//            showTextInputAlert()
+//        }
+        
+        
+        
+//        let todoTableViewCellTextField = cell.contentView.viewWithTag(1) as! UITextField
+//
+//        //        let item = listItems[indexPath.row]
+//
+//        var listItems:ListItem? {
+//            didSet {
+//                todoTableViewCellTextField.text = listItems?.text
+//            }
+//        }
+//
+//        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+//
+//        if UserDefaults.standard.object(forKey: "todo") != nil{
+//            todoArray = UserDefaults.standard.object(forKey: "todo") as! [String]
+//        }
+//        todoTableViewCellTextField.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
+//        todoTableViewCellTextField.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
+//
+        
+        
+        
     }
     
     
@@ -611,7 +766,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     func waitingView(){
         circleGrowLottieAnimationView.isHidden = true
 //        startMicAnimation()
-        addTodoView.isHidden = false
+//        addTodoView.isHidden = false
         inputTodoTextFields.isHidden = false
         goToEditView.isHidden = false
         todoBlurVibrancyEffect.isHidden = true
@@ -799,7 +954,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //ここに以前のコードを載せています
         
         micButtonTouchesOrNot = true
-        
         //20190630近藤追加　ブラー、マイクの波紋が出るようにした。
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                             self.inputTalkMode()
@@ -813,17 +967,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             recordButton.setTitle("Stopping", for: .disabled)
 //            録音が停止した！
             print("録音停止")
+            notFirstTimeInputRealTimeText = false
     
 
             if voiceStr.isEmpty != true {
 //                入力された文字列の入った文字列を表示
 //                入力された文字がリアルタイムで表示されない・・・
 //                希望はテーブルビューに直接文字を書き込みたい
-                inputVoiceLabel.frame = CGRect(x: 0, y: view.frame.size.width / 3, width: view.frame.size.width, height: view.frame.size.height)
-                inputVoiceLabel.textAlignment = NSTextAlignment.center
-                inputVoiceLabel.font = UIFont.systemFont(ofSize: 30)
-                inputVoiceLabel.text = voiceStr
-                view.addSubview(inputVoiceLabel)
+//                inputVoiceLabel.frame = CGRect(x: 0, y: view.frame.size.width / 3, width: view.frame.size.width, height: view.frame.size.height)
+//                inputVoiceLabel.textAlignment = NSTextAlignment.center
+//                inputVoiceLabel.font = UIFont.systemFont(ofSize: 30)
+//                inputVoiceLabel.text = voiceStr
+//                view.addSubview(inputVoiceLabel)
+               
                 UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                     self.waitingView()
                 }, completion: nil)
@@ -920,6 +1076,27 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 //近藤追加20190609
                 self.voiceStr = result.bestTranscription.formattedString
                 
+ 
+                 self.realTimeInputTalkIntoTextField()
+                self.voiceTalkText.text = ""
+                self.voiceTalkText.text = self.voiceStr
+
+                //                //20190705近藤追加　1回目はUITextFieldを作成、二回目はそのTextFieldへ上書き
+//                if self.notFirstTimeInputRealTimeText == false {
+//                //20190704近藤追加
+////                self.voiceToBlurVibrancyEffect()
+//                self.realTimeInputTalkIntoTextField()
+//                    self.notFirstTimeInputRealTimeText = true
+////                    self.firstTimeInputRealTimeText = self.firstTimeInputRealTimeText + 1
+//
+//                } else {
+//                    self.voiceTalkText.removeFromSuperview()
+//                    self.realTimeInputTalkIntoTextField()
+////                    self.voiceTalkText.text = ""
+////                    self.voiceTalkText.text = self.voiceStr
+//                }
+                
+                
                 print(result.bestTranscription.formattedString)
                 isFinal = result.isFinal
             }
@@ -966,6 +1143,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             //バックグラウンドの画像とボカシを表示する
             backGroundImageView.isHidden = false
             todoBlurVibrancyEffect.isHidden = false
+           
+            
             
             //背景色を透明にする
             self.view.backgroundColor = .clear

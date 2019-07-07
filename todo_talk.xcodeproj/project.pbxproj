@@ -15,9 +15,9 @@
 		F54E4AE822A133BE00404021 /* todoMic.json in Resources */ = {isa = PBXBuildFile; fileRef = F54E4AE722A133BE00404021 /* todoMic.json */; };
 		F552F1CF22984C52006EF2EA /* 734-circle-grow.json in Resources */ = {isa = PBXBuildFile; fileRef = F552F1CE22984C52006EF2EA /* 734-circle-grow.json */; };
 		F552F1F5229917A4006EF2EA /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F552F1F4229917A4006EF2EA /* EditViewController.swift */; };
+		F56BC37D22D1F1B700EFB6A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F56BC37C22D1F1B700EFB6A8 /* Main.storyboard */; };
 		F5D70189224BC51700530800 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D70188224BC51700530800 /* AppDelegate.swift */; };
 		F5D7018B224BC51700530800 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D7018A224BC51700530800 /* ViewController.swift */; };
-		F5D7018E224BC51700530800 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5D7018C224BC51700530800 /* Main.storyboard */; };
 		F5D70190224BC51B00530800 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5D7018F224BC51B00530800 /* Assets.xcassets */; };
 		F5D70193224BC51B00530800 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5D70191224BC51B00530800 /* LaunchScreen.storyboard */; };
 		F5EB15E7224F4EF3004B57CF /* 3787-jumping-mic.json in Resources */ = {isa = PBXBuildFile; fileRef = F5EB15E5224F4EF3004B57CF /* 3787-jumping-mic.json */; };
@@ -35,10 +35,10 @@
 		F54E4AE722A133BE00404021 /* todoMic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = todoMic.json; sourceTree = "<group>"; };
 		F552F1CE22984C52006EF2EA /* 734-circle-grow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "734-circle-grow.json"; sourceTree = "<group>"; };
 		F552F1F4229917A4006EF2EA /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
+		F56BC37C22D1F1B700EFB6A8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		F5D70185224BC51700530800 /* todo_talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todo_talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D70188224BC51700530800 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5D7018A224BC51700530800 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F5D7018D224BC51700530800 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F5D7018F224BC51B00530800 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F5D70192224BC51B00530800 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F5D70194224BC51B00530800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -106,8 +106,8 @@
 				F529634D22C8902000D6663A /* TodoTableViewCell.swift */,
 				F529634E22C8902000D6663A /* TodoTableViewCell.xib */,
 				F552F1F4229917A4006EF2EA /* EditViewController.swift */,
+				F56BC37C22D1F1B700EFB6A8 /* Main.storyboard */,
 				F529634522C888C900D6663A /* ListItem.swift */,
-				F5D7018C224BC51700530800 /* Main.storyboard */,
 				F5D7018F224BC51B00530800 /* Assets.xcassets */,
 				F5D70191224BC51B00530800 /* LaunchScreen.storyboard */,
 				F5D70194224BC51B00530800 /* Info.plist */,
@@ -179,7 +179,7 @@
 				F5D70193224BC51B00530800 /* LaunchScreen.storyboard in Resources */,
 				F54E4AE822A133BE00404021 /* todoMic.json in Resources */,
 				F5D70190224BC51B00530800 /* Assets.xcassets in Resources */,
-				F5D7018E224BC51700530800 /* Main.storyboard in Resources */,
+				F56BC37D22D1F1B700EFB6A8 /* Main.storyboard in Resources */,
 				F552F1CF22984C52006EF2EA /* 734-circle-grow.json in Resources */,
 				F5EB15E7224F4EF3004B57CF /* 3787-jumping-mic.json in Resources */,
 				F5EB15E8224F4EF3004B57CF /* 433-checked-done.json in Resources */,
@@ -253,14 +253,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F5D7018C224BC51700530800 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F5D7018D224BC51700530800 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F5D70191224BC51B00530800 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

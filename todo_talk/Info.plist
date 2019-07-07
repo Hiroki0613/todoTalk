@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>音声でTODO♪</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -23,13 +25,13 @@
 	<key>NSCameraUsageDescription</key>
 	<string>端末ライブラリの画像使用のため</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>For using note for TodoList</string>
+	<string>音声入力機能を使用のため</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>端末ライブラリの画像使用のため</string>
+	<string>端末内蔵の画像使用のため</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>端末ライブラリの画像使用のため</string>
+	<string>端末内蔵の画像使用のため</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>For using note for TodoList</string>
+	<string>目的:音声入力機能の使用</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Main</string>
 	<key>UIMainStoryboardFile</key>
