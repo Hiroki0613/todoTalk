@@ -16,10 +16,10 @@ class introductionViewController: UIViewController,UIScrollViewDelegate {
     @IBOutlet weak var introductionPageControl: UIPageControl!
     
     //文面は中央に設置する。
-   var introductionTitleArray =  ["チュートリアルを表示します\n画面を左へスワイプしてください","このアプリは音声入力で\nタスクを追加できます","マイクをタップすることで\n音声入力できます","再びタップすることで\nタスクへ追加します","入力したタスクは直接タップ\nすることで編集ができます","もちろん手入力も可能です。\nただし使い勝手が少し悪いです(汗)","先に文字を入力してから\n右下のプラスボタンを押してください","タスクの消去は右上のEditを押して","左の赤い記号を押し\nDeleteで削除出来ます","これで説明を終わります。"]
+   var introductionTitleArray =  ["チュートリアルを表示します\n画面を左へスワイプしてください","このアプリは音声入力で\nタスクを追加できます","マイクをタップする\nことで音声入力できます","入力後、再びタップすることで\nタスクへ追加します","もちろん手入力も可能です。\n右下のプラスボタンをタップ","文字を入力し「入力完了」ボタンを\nタップすることでタスクに追加します","タスクの消去は右上のEditを押して","左の赤い記号を押し\nDeleteで削除出来ます","また、Optionボタンをタップする\nことで背景の編集が可能です","これで説明を終わります。"]
     
     //実際の操作画面をスクリーンショットで撮影し、introduction画像として使用する
-    var introductionImageArray = ["introduction0","introduction1","introduction2","introduction3","introduction4","introduction5","introduction6","introduction7","introduction7","introduction7"]
+    var introductionImageArray = ["introduction0","introduction1","introduction2","introduction3","introduction4","introduction5","introduction6","introduction7","introduction8","introduction9"]
 
     
    

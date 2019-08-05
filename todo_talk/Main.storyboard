@@ -75,7 +75,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <visualEffectView opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eUi-jm-uIr">
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eUi-jm-uIr">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="9sO-ap-EkW">
@@ -149,10 +149,11 @@
                                     <action selector="micRecordButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ch5-KS-63A"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="文字入力 → ＋ボタンでタスク追加" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Uaa-3R-fia">
+                            <textField opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="文字入力 → ＋ボタンでタスク追加" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Uaa-3R-fia">
                                 <rect key="frame" x="16" y="628" width="343" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
+                                <color key="backgroundColor" red="0.16078431372549018" green="0.16470588235294117" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="done"/>
                             </textField>
@@ -164,10 +165,14 @@
                     <navigationItem key="navigationItem" id="Awx-8q-zCU"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="addTodoView" destination="ecP-RG-Bwz" id="TJL-8K-KcP"/>
                         <outlet property="backGroundImageView" destination="sfH-57-rd0" id="Lg9-5x-9Qz"/>
                         <outlet property="circleGrowLottieAnimationView" destination="dfD-bz-4ct" id="5jx-1R-dMT"/>
                         <outlet property="goToEditView" destination="FRV-6Q-7UY" id="MRC-E9-02m"/>
+                        <outlet property="inputTodoPopOverDone" destination="veI-lX-pv9" id="J89-da-UBd"/>
+                        <outlet property="inputTodoPopOverTextView" destination="D87-6r-XI8" id="q1m-kO-P5S"/>
                         <outlet property="inputTodoTextFields" destination="Uaa-3R-fia" id="2fy-hR-8Pp"/>
+                        <outlet property="inputTodoTextViewPopOverView" destination="3Jp-w6-6ks" id="Pbm-cD-lde"/>
                         <outlet property="micAnimation" destination="KEa-bV-AoT" id="g6U-Cv-Pxk"/>
                         <outlet property="recordButton" destination="xxe-TE-vIG" id="xVG-4p-GvP"/>
                         <outlet property="todoBlurVibrancyEffect" destination="eUi-jm-uIr" id="yYa-lr-oXI"/>
@@ -176,6 +181,37 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="3Jp-w6-6ks">
+                    <rect key="frame" x="0.0" y="0.0" width="313" height="244"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="D87-6r-XI8">
+                            <rect key="frame" x="36" y="35" width="240" height="137"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.047058823529411764" green="0.043137254901960784" blue="0.062745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <color key="textColor" red="0.82745098039215681" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" returnKeyType="done"/>
+                        </textView>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="veI-lX-pv9">
+                            <rect key="frame" x="118" y="196" width="80" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="20"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="入力完了">
+                                <color key="titleColor" red="0.82745098039215681" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="addTodo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4FM-fU-lRB"/>
+                                <action selector="inputTodoPopOverDoneButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sA3-fA-I86"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.16078431372549018" green="0.16470588235294117" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                    <viewLayoutGuide key="safeArea" id="BCw-4a-DFd"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="1076" y="133.5832083958021"/>
         </scene>
@@ -191,8 +227,8 @@
                                 <rect key="frame" x="0.0" y="-2" width="375" height="670"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <visualEffectView opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ayp-gF-HZL">
-                                <rect key="frame" x="0.0" y="-2" width="375" height="670"/>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ayp-gF-HZL">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="670"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="i1c-EO-vkh">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="670"/>
@@ -208,6 +244,13 @@
                                         <rect key="frame" x="114" y="371" width="147" height="235"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ダークモード選択時は選択できません。" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXy-te-xGR" userLabel="details2">
+                                        <rect key="frame" x="32" y="312" width="343" height="46"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -217,13 +260,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="設定しない場合は、灰色の背景になります。ダークモード選択時は選択できません。" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXy-te-xGR" userLabel="details2">
-                                <rect key="frame" x="16" y="313" width="343" height="46"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="編集" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG1-Qb-KGP" userLabel="edit">

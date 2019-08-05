@@ -16,8 +16,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        
+        // 端末の大きさに合わせて、画面のサイズを変えていく
+        let storyboardMultidevice: UIStoryboard = self.grabStoryboard()
+        
+        if let window = window {
+            window.rootViewController = storyboardMultidevice.instantiateInitialViewController() as UIViewController?
+        }
+        
+        self.window?.makeKeyAndVisible()
+        
+        
+        
+        
         //使用するStoryBoardのインスタンス化
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        //マルチデバイス対応により、こちらのコードを有効にすると、Mainが呼び出されてしまう
+//        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         
         // UserDefaultsにbool型のKey"launchedBefore"を用意
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
@@ -29,7 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //起動を判定するlaunchedBeforeという論理型のKeyをUserDefaultsに用意
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             //チュートリアル用のViewControllerのインスタンスを用意してwindowに渡す
-            let introductionVC = storyBoard.instantiateViewController(withIdentifier: "introductionViewController") as! introductionViewController
+            //ストーリーボードをマルチデバイスに対応させるため、同じstoryboardMultideviceで定義
+            let introductionVC = storyboardMultidevice.instantiateViewController(withIdentifier: "introductionViewController") as! introductionViewController
             self.window = UIWindow(frame: UIScreen.main.bounds)
             self.window?.rootViewController = introductionVC
         }
@@ -44,6 +59,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     
 
+    // マルチデバイス対応のメソッド
+    func grabStoryboard() -> UIStoryboard {
+        var storyboard = UIStoryboard()
+        let height = UIScreen.main.bounds.size.height
+        // iPhone6,6S,7,8
+        if height == 667 {
+            storyboard = UIStoryboard(name: "Main", bundle: nil)
+        // iPhone3G,3GS,4,4S
+        } else if height == 480 {
+            storyboard = UIStoryboard(name: "iPhone4S", bundle: nil)
+        // iPhone5,5C,5S,SE
+        } else if height == 568 {
+            storyboard = UIStoryboard(name: "iPhoneSE", bundle: nil)
+        // iPhone6Plus,6SPlus,7Plus,8Plus
+        } else if height == 736 {
+            storyboard = UIStoryboard(name: "iPhone8Plus", bundle: nil)
+        // iPhoneX,XS
+        } else if height == 812 {
+            storyboard = UIStoryboard(name: "iPhoneXS", bundle: nil)
+        // iPhoneXR,XSMAX
+        } else if height == 896 {
+            storyboard = UIStoryboard(name: "iPhoneXSMAX", bundle: nil)
+        }
+        print(storyboard)
+        return storyboard
+    }
+    
     
     
     

@@ -16,6 +16,11 @@
 		F552F1CF22984C52006EF2EA /* 734-circle-grow.json in Resources */ = {isa = PBXBuildFile; fileRef = F552F1CE22984C52006EF2EA /* 734-circle-grow.json */; };
 		F552F1F5229917A4006EF2EA /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F552F1F4229917A4006EF2EA /* EditViewController.swift */; };
 		F56BC37D22D1F1B700EFB6A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F56BC37C22D1F1B700EFB6A8 /* Main.storyboard */; };
+		F5CC519422DA1BF60097B4BB /* iPhoneSE.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CC519322DA1BF60097B4BB /* iPhoneSE.storyboard */; };
+		F5CC519622DA1C210097B4BB /* iPhone8Plus.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CC519522DA1C210097B4BB /* iPhone8Plus.storyboard */; };
+		F5CC519822DA1C440097B4BB /* iPhoneXS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CC519722DA1C440097B4BB /* iPhoneXS.storyboard */; };
+		F5CC519A22DA1C600097B4BB /* iPhoneXSMAX.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CC519922DA1C600097B4BB /* iPhoneXSMAX.storyboard */; };
+		F5CC519C22DA1C890097B4BB /* iPhone4S.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CC519B22DA1C890097B4BB /* iPhone4S.storyboard */; };
 		F5D70189224BC51700530800 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D70188224BC51700530800 /* AppDelegate.swift */; };
 		F5D7018B224BC51700530800 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D7018A224BC51700530800 /* ViewController.swift */; };
 		F5D70190224BC51B00530800 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5D7018F224BC51B00530800 /* Assets.xcassets */; };
@@ -36,6 +41,11 @@
 		F552F1CE22984C52006EF2EA /* 734-circle-grow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "734-circle-grow.json"; sourceTree = "<group>"; };
 		F552F1F4229917A4006EF2EA /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		F56BC37C22D1F1B700EFB6A8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		F5CC519322DA1BF60097B4BB /* iPhoneSE.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = iPhoneSE.storyboard; sourceTree = "<group>"; };
+		F5CC519522DA1C210097B4BB /* iPhone8Plus.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = iPhone8Plus.storyboard; sourceTree = "<group>"; };
+		F5CC519722DA1C440097B4BB /* iPhoneXS.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = iPhoneXS.storyboard; sourceTree = "<group>"; };
+		F5CC519922DA1C600097B4BB /* iPhoneXSMAX.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = iPhoneXSMAX.storyboard; sourceTree = "<group>"; };
+		F5CC519B22DA1C890097B4BB /* iPhone4S.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = iPhone4S.storyboard; sourceTree = "<group>"; };
 		F5D70185224BC51700530800 /* todo_talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todo_talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D70188224BC51700530800 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5D7018A224BC51700530800 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,11 +116,16 @@
 				F529634D22C8902000D6663A /* TodoTableViewCell.swift */,
 				F529634E22C8902000D6663A /* TodoTableViewCell.xib */,
 				F552F1F4229917A4006EF2EA /* EditViewController.swift */,
-				F56BC37C22D1F1B700EFB6A8 /* Main.storyboard */,
 				F529634522C888C900D6663A /* ListItem.swift */,
 				F5D7018F224BC51B00530800 /* Assets.xcassets */,
 				F5D70191224BC51B00530800 /* LaunchScreen.storyboard */,
 				F5D70194224BC51B00530800 /* Info.plist */,
+				F56BC37C22D1F1B700EFB6A8 /* Main.storyboard */,
+				F5CC519B22DA1C890097B4BB /* iPhone4S.storyboard */,
+				F5CC519322DA1BF60097B4BB /* iPhoneSE.storyboard */,
+				F5CC519522DA1C210097B4BB /* iPhone8Plus.storyboard */,
+				F5CC519722DA1C440097B4BB /* iPhoneXS.storyboard */,
+				F5CC519922DA1C600097B4BB /* iPhoneXSMAX.storyboard */,
 			);
 			path = todo_talk;
 			sourceTree = "<group>";
@@ -177,13 +192,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5D70193224BC51B00530800 /* LaunchScreen.storyboard in Resources */,
+				F5CC519A22DA1C600097B4BB /* iPhoneXSMAX.storyboard in Resources */,
 				F54E4AE822A133BE00404021 /* todoMic.json in Resources */,
 				F5D70190224BC51B00530800 /* Assets.xcassets in Resources */,
 				F56BC37D22D1F1B700EFB6A8 /* Main.storyboard in Resources */,
+				F5CC519822DA1C440097B4BB /* iPhoneXS.storyboard in Resources */,
 				F552F1CF22984C52006EF2EA /* 734-circle-grow.json in Resources */,
 				F5EB15E7224F4EF3004B57CF /* 3787-jumping-mic.json in Resources */,
 				F5EB15E8224F4EF3004B57CF /* 433-checked-done.json in Resources */,
+				F5CC519422DA1BF60097B4BB /* iPhoneSE.storyboard in Resources */,
+				F5CC519622DA1C210097B4BB /* iPhone8Plus.storyboard in Resources */,
 				F529635022C8902000D6663A /* TodoTableViewCell.xib in Resources */,
+				F5CC519C22DA1C890097B4BB /* iPhone4S.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +405,7 @@
 			baseConfigurationReference = D836C9902B7BF006F32AFD4D /* Pods-todo_talk.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K6FA22KGKX;
 				INFOPLIST_FILE = todo_talk/Info.plist;
@@ -393,10 +414,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.withios.todo-talk";
+				PRODUCT_BUNDLE_IDENTIFIER = com.withios.TodoTalk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -405,6 +427,7 @@
 			baseConfigurationReference = 3D56E3CAB2621119EA97B3B0 /* Pods-todo_talk.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K6FA22KGKX;
 				INFOPLIST_FILE = todo_talk/Info.plist;
@@ -413,10 +436,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.withios.todo-talk";
+				PRODUCT_BUNDLE_IDENTIFIER = com.withios.TodoTalk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
