@@ -46,7 +46,7 @@
 		F5CC519722DA1C440097B4BB /* iPhoneXS.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = iPhoneXS.storyboard; sourceTree = "<group>"; };
 		F5CC519922DA1C600097B4BB /* iPhoneXSMAX.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = iPhoneXSMAX.storyboard; sourceTree = "<group>"; };
 		F5CC519B22DA1C890097B4BB /* iPhone4S.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = iPhone4S.storyboard; sourceTree = "<group>"; };
-		F5D70185224BC51700530800 /* todo_talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todo_talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5D70185224BC51700530800 /* 音声でTODO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "音声でTODO.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5D70188224BC51700530800 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5D7018A224BC51700530800 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F5D7018F224BC51B00530800 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 		F5D70186224BC51700530800 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F5D70185224BC51700530800 /* todo_talk.app */,
+				F5D70185224BC51700530800 /* 音声でTODO.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,7 +149,7 @@
 			);
 			name = todo_talk;
 			productName = todo_talk;
-			productReference = F5D70185224BC51700530800 /* todo_talk.app */;
+			productReference = F5D70185224BC51700530800 /* 音声でTODO.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -415,7 +415,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.withios.TodoTalk;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "音声でTODO";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -437,7 +437,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.withios.TodoTalk;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "音声でTODO";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
