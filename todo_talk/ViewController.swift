@@ -309,20 +309,34 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             
             
             
-            let voiceTalkSupport = UILabel()
-            voiceTalkSupport.layer.zPosition = 1
-            voiceTalkSupport.frame = CGRect(x: 0, y: view.frame.size.width/3, width: view.frame.size.width, height: view.frame.size.height/4)
+            let voiceTalkSupport1 = UILabel()
+            voiceTalkSupport1.layer.zPosition = 1
+            voiceTalkSupport1.frame = CGRect(x: 0, y: view.frame.size.width/3, width: view.frame.size.width, height: view.frame.size.height/4)
 //            voiceTalkSupport.text = "シングルタップでタスク追加\n\nダブルタップで音声入力終了"
-            voiceTalkSupport.numberOfLines = 2
-            voiceTalkSupport.text = "音声入力後にタップすると\nタスクに追加されます"
-            voiceTalkSupport.font = UIFont.init(name: "HiraMaruProN-W4", size: 22)
+            voiceTalkSupport1.numberOfLines = 2
+            voiceTalkSupport1.text = "音声入力後にタップすると\nタスクに追加されます"
+            voiceTalkSupport1.font = UIFont.init(name: "HiraMinProN-W6", size: 20)
          //   systemFont(ofSize: 28)
-            voiceTalkSupport.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
-            voiceTalkSupport.textAlignment = .center
-            voiceTalkSupport.numberOfLines = 0
+            voiceTalkSupport1.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
+            voiceTalkSupport1.textAlignment = .center
+            voiceTalkSupport1.numberOfLines = 0
 //            voiceTalkSupport.frame = todoBlurVibrancyEffect.contentView.bounds
-            todoBlurVibrancyEffect.contentView.addSubview(voiceTalkSupport)
+            todoBlurVibrancyEffect.contentView.addSubview(voiceTalkSupport1)
 
+            
+            let voiceTalkSupport2 = UILabel()
+            voiceTalkSupport2.layer.zPosition = 1
+        voiceTalkSupport2.frame = CGRect(x: 0, y: view.frame.size.width/6, width: view.frame.size.width, height: view.frame.size.height/6)
+            voiceTalkSupport2.backgroundColor = UIColor(red: 106/255, green: 106/255, blue: 106/255, alpha: 1)
+            voiceTalkSupport2.numberOfLines = 2
+            voiceTalkSupport2.text = "音声レコーディング中\nVoice Recording Now"
+            voiceTalkSupport2.font = UIFont.init(name: "HiraMaruProN-W4", size: 28)
+            //   systemFont(ofSize: 28)
+            voiceTalkSupport2.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
+            voiceTalkSupport2.textAlignment = .center
+            voiceTalkSupport2.numberOfLines = 0
+            //            voiceTalkSupport.frame = todoBlurVibrancyEffect.contentView.bounds
+            todoBlurVibrancyEffect.contentView.addSubview(voiceTalkSupport2)
     
     
     }
