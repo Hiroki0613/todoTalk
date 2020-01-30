@@ -85,6 +85,46 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7F39D08523E30AE200900D0E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F529635122C8C78900D6663A /* introductionViewController.swift */,
+				F5D7018A224BC51700530800 /* ViewController.swift */,
+				F529634D22C8902000D6663A /* TodoTableViewCell.swift */,
+				F552F1F4229917A4006EF2EA /* EditViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		7F39D08623E30AF300900D0E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F56BC37C22D1F1B700EFB6A8 /* Main.storyboard */,
+				F5CC519B22DA1C890097B4BB /* iPhone4S.storyboard */,
+				F5CC519322DA1BF60097B4BB /* iPhoneSE.storyboard */,
+				F5CC519522DA1C210097B4BB /* iPhone8Plus.storyboard */,
+				F5CC519722DA1C440097B4BB /* iPhoneXS.storyboard */,
+				F5CC519922DA1C600097B4BB /* iPhoneXSMAX.storyboard */,
+				F5D70191224BC51B00530800 /* LaunchScreen.storyboard */,
+				F5D70188224BC51700530800 /* AppDelegate.swift */,
+				F529634E22C8902000D6663A /* TodoTableViewCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		7F39D08723E30AF800900D0E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F5EB15E6224F4EF3004B57CF /* 433-checked-done.json */,
+				F54E4AE722A133BE00404021 /* todoMic.json */,
+				F552F1CE22984C52006EF2EA /* 734-circle-grow.json */,
+				F5EB15E5224F4EF3004B57CF /* 3787-jumping-mic.json */,
+				F529634522C888C900D6663A /* ListItem.swift */,
+				F5D7018F224BC51B00530800 /* Assets.xcassets */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		F5D7017C224BC51700530800 = {
 			isa = PBXGroup;
 			children = (
@@ -106,26 +146,10 @@
 		F5D70187224BC51700530800 /* todo_talk */ = {
 			isa = PBXGroup;
 			children = (
-				F5EB15E6224F4EF3004B57CF /* 433-checked-done.json */,
-				F54E4AE722A133BE00404021 /* todoMic.json */,
-				F552F1CE22984C52006EF2EA /* 734-circle-grow.json */,
-				F5EB15E5224F4EF3004B57CF /* 3787-jumping-mic.json */,
-				F5D70188224BC51700530800 /* AppDelegate.swift */,
-				F529635122C8C78900D6663A /* introductionViewController.swift */,
-				F5D7018A224BC51700530800 /* ViewController.swift */,
-				F529634D22C8902000D6663A /* TodoTableViewCell.swift */,
-				F529634E22C8902000D6663A /* TodoTableViewCell.xib */,
-				F552F1F4229917A4006EF2EA /* EditViewController.swift */,
-				F529634522C888C900D6663A /* ListItem.swift */,
-				F5D7018F224BC51B00530800 /* Assets.xcassets */,
-				F5D70191224BC51B00530800 /* LaunchScreen.storyboard */,
+				7F39D08723E30AF800900D0E /* Model */,
+				7F39D08623E30AF300900D0E /* View */,
+				7F39D08523E30AE200900D0E /* Controller */,
 				F5D70194224BC51B00530800 /* Info.plist */,
-				F56BC37C22D1F1B700EFB6A8 /* Main.storyboard */,
-				F5CC519B22DA1C890097B4BB /* iPhone4S.storyboard */,
-				F5CC519322DA1BF60097B4BB /* iPhoneSE.storyboard */,
-				F5CC519522DA1C210097B4BB /* iPhone8Plus.storyboard */,
-				F5CC519722DA1C440097B4BB /* iPhoneXS.storyboard */,
-				F5CC519922DA1C600097B4BB /* iPhoneXSMAX.storyboard */,
 			);
 			path = todo_talk;
 			sourceTree = "<group>";
