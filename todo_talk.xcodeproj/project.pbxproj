@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F39D08A23E4630F00900D0E /* InputVoiceSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F39D08923E4630F00900D0E /* InputVoiceSystem.swift */; };
 		EAA8F4DC125F6046B99DE1E2 /* Pods_todo_talk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */; };
 		F529634622C888C900D6663A /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F529634522C888C900D6663A /* ListItem.swift */; };
 		F529634F22C8902000D6663A /* TodoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F529634D22C8902000D6663A /* TodoTableViewCell.swift */; };
@@ -32,6 +33,7 @@
 /* Begin PBXFileReference section */
 		14D00D1ECE337CA388332A3E /* Pods_todo_talk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_todo_talk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D56E3CAB2621119EA97B3B0 /* Pods-todo_talk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.release.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.release.xcconfig"; sourceTree = "<group>"; };
+		7F39D08923E4630F00900D0E /* InputVoiceSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputVoiceSystem.swift; sourceTree = "<group>"; };
 		D836C9902B7BF006F32AFD4D /* Pods-todo_talk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo_talk.debug.xcconfig"; path = "Pods/Target Support Files/Pods-todo_talk/Pods-todo_talk.debug.xcconfig"; sourceTree = "<group>"; };
 		F529634522C888C900D6663A /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		F529634D22C8902000D6663A /* TodoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewCell.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				F5D7018A224BC51700530800 /* ViewController.swift */,
 				F529634D22C8902000D6663A /* TodoTableViewCell.swift */,
 				F552F1F4229917A4006EF2EA /* EditViewController.swift */,
+				7F39D08923E4630F00900D0E /* InputVoiceSystem.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F529635222C8C78900D6663A /* introductionViewController.swift in Sources */,
+				7F39D08A23E4630F00900D0E /* InputVoiceSystem.swift in Sources */,
 				F529634622C888C900D6663A /* ListItem.swift in Sources */,
 				F552F1F5229917A4006EF2EA /* EditViewController.swift in Sources */,
 				F5D7018B224BC51700530800 /* ViewController.swift in Sources */,
