@@ -11,6 +11,8 @@ import Speech
 
 class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
     
+    var viewController = ViewController()
+    
     
     //    //音声関連
     // MARK: Properties
@@ -86,7 +88,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
         voiceTalkText.delegate = self
         voiceTalkText.textAlignment = .left
         //            voiceTalkText.frame = todoBlurVibrancyEffect.contentView.bounds
-        todoBlurVibrancyEffect.contentView.addSubview(voiceTalkText)
+        viewController.todoBlurVibrancyEffect.contentView.addSubview(voiceTalkText)
         
         voiceTalkText.text = voiceStr
     }
@@ -108,7 +110,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
         myAlert.addAction(myOkAction)
         
         // UIAlertを発動する.
-        present(myAlert, animated: true, completion:  nil)
+        viewController.present(myAlert, animated: true, completion:  nil)
         
     }
     
@@ -173,7 +175,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
     @objc func changeText(_ textField: UITextField)  {
         //20190630近藤追加　本当はTableViewでダイレクトに入力されて欲しかったが、出来なかったので別枠で表示にした
         voiceTalkText.text = textField.text
-        todoTableViewCellTextField.text = textField.text
+        viewController.todoTableViewCellTextField.text = textField.text
     }
 
     
@@ -190,8 +192,8 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
         if audioEngine.isRunning {
             audioEngine.stop()
             recognitionRequest?.endAudio()
-            recordButton.isEnabled = false
-            recordButton.setTitle("Stopping", for: .disabled)
+            viewController.recordButton.isEnabled = false
+            viewController.recordButton.setTitle("Stopping", for: .disabled)
             //            録音が停止した！
             print("録音停止")
             notFirstTimeInputRealTimeText = false
@@ -203,11 +205,11 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
                     self.waitingView()
                 }, completion: nil)
                 
-                self.todoArray.append(self.voiceStr)
+                self.viewController.todoArray.append(self.voiceStr)
                 UserDefaults.standard.set(self.todoArray, forKey: "todo")
-                self.todoTableView.reloadData()
+                viewController.todoTableView.reloadData()
                 self.voiceStr = ""
-                self.recordButton.isEnabled = true
+                viewController.recordButton.isEnabled = true
                 
             }else {
                 //空の場合
@@ -215,7 +217,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
             }
         } else {
             try! startRecording()
-            recordButton.setTitle("Stop recording", for: [])
+            viewController.recordButton.setTitle("Stop recording", for: [])
         }
         print("voiceStr")
         
@@ -229,7 +231,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
     
     
     func showVoiceInputAlert(){
-        print(recordButton.isEnabled)
+        print(viewController.recordButton.isEnabled)
         let alertViewControler = UIAlertController(title: "何も音声が入力されていません。", message: "もう一度、発声してください", preferredStyle: .alert)
         
         //        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -239,7 +241,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
         }
         
         alertViewControler.addAction(cancelAction)
-        present(alertViewControler, animated: true, completion: nil)
+        viewController.present(alertViewControler, animated: true, completion: nil)
         self.recordButton.isEnabled = true
         print(recordButton.isEnabled)
     }
