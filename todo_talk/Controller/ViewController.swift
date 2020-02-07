@@ -203,7 +203,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         mainSimpleModeChangeSwitch()
         
         //待ち受け画面
-        waitingView()
+        inputVoiceSystem.waitingView()
         
         if UserDefaults.standard.object(forKey: "photo") != nil {
             let selectedImage = UserDefaults.standard.object(forKey: "photo")
@@ -270,7 +270,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             if !inputTodoTextFields.resignFirstResponder(){
                 UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                     self.view.transform = CGAffineTransform.identity
-                    self.waitingView()
+                    self.inputVoiceSystem.waitingView()
                 }, completion: nil)
                 
                 inputVoiceSystem.micButtonTouchesOrNot = false
@@ -465,6 +465,26 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             textView.font = UIFont.init(name: "HiraMaruProN-W4", size: 17)
             
         }
+    }
+    
+    
+    func realTimeInputTalkIntoTextField() {
+        //音声入力時にリアルタイムで文字が入力されているのを確認するため実装
+        inputVoiceSystem.voiceTalkText.text = ""
+        
+        inputVoiceSystem.voiceTalkText.frame = CGRect(x: 20, y: view.frame.size.width/5*4, width: view.frame.size.width - 20, height: view.frame.size.height/4)
+        inputVoiceSystem.voiceTalkText.layer.zPosition = 4
+        inputVoiceSystem.voiceTalkText.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
+        //   systemFont(ofSize: 28)
+        inputVoiceSystem.voiceTalkText.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
+        inputVoiceSystem.voiceTalkText.backgroundColor = .clear
+        inputVoiceSystem.voiceTalkText.textAlignment = .center
+        inputVoiceSystem.voiceTalkText.delegate = self
+        inputVoiceSystem.voiceTalkText.textAlignment = .left
+        //            voiceTalkText.frame = todoBlurVibrancyEffect.contentView.bounds
+        inputVoiceSystem.viewController.todoBlurVibrancyEffect.contentView.addSubview(inputVoiceSystem.voiceTalkText)
+        
+        inputVoiceSystem.voiceTalkText.text = inputVoiceSystem.voiceStr
     }
     
     

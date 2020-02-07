@@ -9,7 +9,7 @@
 import UIKit
 import Speech
 
-class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
+class InputVoiceSystem:NSObject,SFSpeechRecognizerDelegate {
     
     var viewController = ViewController()
     
@@ -74,24 +74,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
     }
     
     
-    func realTimeInputTalkIntoTextField() {
-        //音声入力時にリアルタイムで文字が入力されているのを確認するため実装
-        voiceTalkText.text = ""
-        
-        voiceTalkText.frame = CGRect(x: 20, y: view.frame.size.width/5*4, width: view.frame.size.width - 20, height: view.frame.size.height/4)
-        voiceTalkText.layer.zPosition = 4
-        voiceTalkText.font = UIFont.init(name: "HiraMaruProN-W4", size: 20)
-        //   systemFont(ofSize: 28)
-        voiceTalkText.textColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
-        voiceTalkText.backgroundColor = .clear
-        voiceTalkText.textAlignment = .center
-        voiceTalkText.delegate = self
-        voiceTalkText.textAlignment = .left
-        //            voiceTalkText.frame = todoBlurVibrancyEffect.contentView.bounds
-        viewController.todoBlurVibrancyEffect.contentView.addSubview(voiceTalkText)
-        
-        voiceTalkText.text = voiceStr
-    }
+
     
     //渡された文字列が入ったアラートを表示する
     
@@ -140,7 +123,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
                 
                 //近藤追加20190609
                 self.voiceStr = result.bestTranscription.formattedString
-                self.realTimeInputTalkIntoTextField()
+                self.viewController.realTimeInputTalkIntoTextField()
                 self.voiceTalkText.text = ""
                 self.voiceTalkText.text = self.voiceStr
                 
@@ -185,7 +168,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
         micButtonTouchesOrNot = true
         //20190630近藤追加　ブラー、マイクの波紋が出るようにした。
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
-            self.inputTalkMode()
+            //self.inputTalkMode()
         }, completion: nil)
         
         
@@ -206,7 +189,7 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
                 }, completion: nil)
                 
                 self.viewController.todoArray.append(self.voiceStr)
-                UserDefaults.standard.set(self.todoArray, forKey: "todo")
+                UserDefaults.standard.set(viewController.todoArray, forKey: "todo")
                 viewController.todoTableView.reloadData()
                 self.voiceStr = ""
                 viewController.recordButton.isEnabled = true
@@ -242,8 +225,8 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
         
         alertViewControler.addAction(cancelAction)
         viewController.present(alertViewControler, animated: true, completion: nil)
-        self.recordButton.isEnabled = true
-        print(recordButton.isEnabled)
+        viewController.recordButton.isEnabled = true
+        print(viewController.recordButton.isEnabled)
     }
     
     
@@ -251,12 +234,12 @@ class InputVoiceSystem:NSObject, SFSpeechRecognizerDelegate {
     //lottieにて、talkInputButtonの中心点から発生しているようにする。
     //問題あり！。音声入力NG時or編集時に右上のDoneを押すとボタンが消えてしまう。
     func waitingView(){
-        circleGrowLottieAnimationView.isHidden = true
+        viewController.circleGrowLottieAnimationView.isHidden = true
         //        startMicAnimation()
         //        addTodoView.isHidden = false
         //        inputTodoTextFields.isHidden = false
-        goToEditView.isHidden = false
-        todoBlurVibrancyEffect.isHidden = true
+        viewController.goToEditView.isHidden = false
+        viewController.todoBlurVibrancyEffect.isHidden = true
     }
     
 }
